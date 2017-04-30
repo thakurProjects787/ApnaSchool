@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_each_user_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.projects.thakur.apnaschool.UpdateInfo.AddNewTeachersInfo"
+    tools:showIn="@layout/activity_add_new_teachers_info">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="10dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimaryDark">
+
+                <EditText
+                    android:id="@+id/edtxt_teacher_ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="ID"
+                    android:inputType="text"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimaryDark">
+
+                <EditText
+                    android:id="@+id/edtxt_teacher_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Name"
+                    android:inputType="textPersonName"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="Select Designation :"
+                android:textSize="24sp"
+                android:textStyle="bold|italic" />
+
+            <Spinner
+                android:id="@+id/sp_teacher_designation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="100sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorPrimaryDark">
+
+                <EditText
+                    android:id="@+id/edtxt_teacher_join_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Join Date"
+                    android:inputType="text"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="Education Details :"
+                android:textSize="24sp"
+                android:textStyle="bold|italic" />
+
+            <EditText
+                android:id="@+id/edtxt_teacher_edu_details"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@drawable/edittextstyle"
+                android:gravity="top"
+                android:hint="Please write here!!"
+                android:inputType="textMultiLine"
+                android:isScrollContainer="true"
+                android:padding="24dp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="Special Area's :"
+                android:textSize="24sp"
+                android:textStyle="bold|italic" />
+
+            <EditText
+                android:id="@+id/edtxt_teacher_special_areas"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@drawable/edittextstyle"
+                android:gravity="top"
+                android:hint="Please write here!!"
+                android:inputType="textMultiLine"
+                android:isScrollContainer="true"
+                android:padding="24dp" />
+
+            <Button
+                android:id="@+id/btn_add_new_teacher"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:background="@color/primary_dark"
+                android:textColor="@color/accent"
+                android:text="ADD NEW" />
+
+            <Button
+                android:id="@+id/btn_delete_current_teacher"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:background="@color/primary_dark"
+                android:textColor="@color/accent"
+                android:text="DELETE" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

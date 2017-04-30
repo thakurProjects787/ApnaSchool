@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "173930145353",
+    "firebase_url": "https://apnaschool-14636.firebaseio.com",
+    "project_id": "apnaschool-14636",
+    "storage_bucket": "apnaschool-14636.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173930145353:android:6ed62b5be1a96fe3",
+        "android_client_info": {
+          "package_name": "com.projects.thakur.apnaschool"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "173930145353-jd3hjf3d2v5mjq0lcc75j1r8ivh5djbg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.projects.thakur.apnaschool",
+            "certificate_hash": "74c05b1cf40a827adf199d871fc6a96760f684a8"
+          }
+        },
+        {
+          "client_id": "173930145353-fode9st61bd28rgmlq2jg5na1jiiqa23.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa3b4CWMc4wDpIz4w4XFDIobC7G4GKig4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "173930145353-fode9st61bd28rgmlq2jg5na1jiiqa23.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

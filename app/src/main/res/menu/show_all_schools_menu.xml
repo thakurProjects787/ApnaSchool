@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/show_all_schools_on_map"
+        android:title="View all on Map"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/send_all_schools_details_on_mail"
+        android:title="Send Details"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+</menu>

@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/edit_info"
+        android:title="Edit"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_edit"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/view_on_map"
+        android:title="View On MAP"
+        android:orderInCategory="100"/>
+
+</menu>

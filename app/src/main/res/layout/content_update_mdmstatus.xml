@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content_each_user_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.projects.thakur.apnaschool.DailyStatus.UpdateMDMStatus"
+    tools:showIn="@layout/activity_update_mdmstatus">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+            <!-- MDM info submition -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/mdm_info_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="9dp"
+                android:elevation="10dp"
+                card_view:cardBackgroundColor="@color/accent"
+                card_view:cardCornerRadius="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/txtv_mdm_info_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:layout_weight="1"
+                        android:text="Med-Day-Meal"
+                        android:textSize="16sp"
+                        android:textStyle="normal|bold" />
+
+
+                    <TextView
+                        android:id="@+id/txtv_mdm_total_students"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="TOTAL STUDENTS"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@color/btn_logut_bg"
+                        android:textSize="16sp"
+                        android:textStyle="normal|bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColorHint="@color/colorPrimaryDark">
+
+                        <EditText
+                            android:id="@+id/txtv_mdm_present_students"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Present"
+                            android:inputType="number"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="MDM STOCK :"
+                android:layout_marginLeft="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold|italic" />
+
+
+            <!-- mdm stock details submition -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/mdm_stock_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="9dp"
+                android:elevation="10dp"
+                card_view:cardBackgroundColor="@color/accent"
+                card_view:cardCornerRadius="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+
+                    <TextView
+                        android:id="@+id/txtv_mdm_rice_stock_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif-condensed"
+                        android:layout_weight="1"
+                        android:text="RICE"
+                        android:textSize="16sp"
+                        android:textStyle="normal|bold" />
+
+
+                    <TextView
+                        android:id="@+id/txtv_mdm_total_rice_stock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-condensed"
+                        android:text="123 Kg"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@color/btn_logut_bg"
+                        android:textSize="16sp"
+                        android:textStyle="normal|bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColorHint="@color/colorPrimaryDark">
+
+                        <EditText
+                            android:id="@+id/txtv_mdm_rice_used_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Amount Used"
+                            android:inputType="number"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+
+            <!-- mdm menu details section -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/open_points_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_margin="9dp"
+                android:elevation="10dp"
+                card_view:cardBackgroundColor="@color/accent"
+                card_view:cardCornerRadius="5dp">
+
+                <LinearLayout
+                    android:id="@+id/open_points"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="MDM Menu :"
+                        android:paddingTop="10dp"
+                        android:textSize="24sp"
+                        android:textStyle="bold|italic" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:inputType="textMultiLine"
+                        android:id="@+id/txtv_today_mdm_menus"
+                        android:isScrollContainer="true"
+                        android:hint="Type today MDM menu details !!!"
+                        android:gravity="top"
+                        android:padding="24dp"
+                        android:background="@drawable/edittextstyle"
+                        />
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <Button
+                android:id="@+id/btn_update_school_daily_mdm_status"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:background="@color/primary_dark"
+                android:textColor="@color/accent"
+                android:text="SUBMIT"/>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>
