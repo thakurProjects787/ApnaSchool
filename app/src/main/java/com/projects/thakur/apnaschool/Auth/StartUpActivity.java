@@ -58,20 +58,6 @@ public class StartUpActivity extends AppCompatActivity {
 
         readUserCurrentData();
 
-        readUserObject();
-
-
-        if(userDetails == null){
-
-            Toast.makeText(getApplicationContext(), "Problem with App !!", Toast.LENGTH_LONG).show();
-
-        } else {
-            Toast.makeText(getApplicationContext(), "Done !!", Toast.LENGTH_LONG).show();
-
-            getAuthStatus();
-        }
-
-
     }
 
 
@@ -134,7 +120,20 @@ public class StartUpActivity extends AppCompatActivity {
 
                 updateUserDetails(dataSnapshot.getValue(UserBasicDetails.class));
 
-                getAuthStatus();
+                readUserObject();
+
+                if(userDetails == null){
+
+                    Toast.makeText(getApplicationContext(), "Problem with App !!", Toast.LENGTH_LONG).show();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Done !!", Toast.LENGTH_LONG).show();
+
+                    getAuthStatus();
+
+                }
+
+
 
                 hideProgressDialog();
 

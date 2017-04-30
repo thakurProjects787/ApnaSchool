@@ -33,8 +33,7 @@
                     android:fontFamily="sans-serif-condensed"
                     android:text="Achivment Date"
                     android:textAlignment="viewEnd"
-                    android:textSize="14sp"
-                    android:textStyle="normal|bold" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
