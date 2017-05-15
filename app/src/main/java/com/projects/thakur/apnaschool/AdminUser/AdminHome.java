@@ -19,10 +19,12 @@ import com.projects.thakur.apnaschool.Auth.LoginActivity;
 import com.projects.thakur.apnaschool.Auth.SignupActivity;
 import com.projects.thakur.apnaschool.Auth.StartUpActivity;
 import com.projects.thakur.apnaschool.Common.SettingActivity;
+import com.projects.thakur.apnaschool.DailyStatus.AdminOverallAttendenceStatus;
+import com.projects.thakur.apnaschool.DailyStatus.AdminOverallMDMStatusActivity;
 import com.projects.thakur.apnaschool.Model.UserBasicDetails;
 import com.projects.thakur.apnaschool.R;
+import com.projects.thakur.apnaschool.Task.AdminShowAllTaskTypesActivity;
 import com.projects.thakur.apnaschool.UpdateInfo.ShowEachSchoolDetails;
-import com.projects.thakur.apnaschool.UpdateInfo.UpdateBasicInfoActivity;
 
 
 public class AdminHome extends AppCompatActivity implements View.OnClickListener {
@@ -33,7 +35,7 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
     private String userdetails;
 
 
-    private Button btn_addnewUser, btn_show_all_users, btn_open_window, btn_createTask;
+    private Button btn_addnewUser, btn_show_all_users, btn_today_attendencs_status,btn_today_mdm_status,btn_createTask,btn_show_all_task;
 
     private TextView txtv_logged_admin_name,txtv_logged_admin_email_id,txtv_admin_user_type,txtv_admin_user_address;
 
@@ -47,14 +49,18 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
 
         btn_addnewUser = (Button) findViewById(R.id.btn_add_new_User);
         btn_show_all_users = (Button) findViewById(R.id.btn_show_all_user);
-        btn_open_window = (Button) findViewById(R.id.btn_open_today_attendencs_window);
+        btn_today_attendencs_status = (Button) findViewById(R.id.btn_today_attendencs_status);
+        btn_today_mdm_status = (Button) findViewById(R.id.btn_today_mdm_status);
         btn_createTask = (Button) findViewById(R.id.btn_create_new_task);
+        btn_show_all_task = (Button) findViewById(R.id.btn_show_all_task);
 
         // Click listeners
         btn_addnewUser.setOnClickListener(this);
         btn_show_all_users.setOnClickListener(this);
-        btn_open_window.setOnClickListener(this);
+        btn_today_attendencs_status.setOnClickListener(this);
+        btn_today_mdm_status.setOnClickListener(this);
         btn_createTask.setOnClickListener(this);
+        btn_show_all_task.setOnClickListener(this);
 
         //Textview
         txtv_logged_admin_name = (TextView) findViewById(R.id.txtv_logged_admin_name);
@@ -111,6 +117,29 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
                 Intent intent = new Intent(AdminHome.this, ShowAllSchoolsActivity.class);
                 startActivity(intent);
                 break;
+
+            case R.id.btn_today_attendencs_status:
+                Intent intent_att = new Intent(AdminHome.this, AdminOverallAttendenceStatus.class);
+                startActivity(intent_att);
+                break;
+
+            case R.id.btn_today_mdm_status:
+                Intent intent_mdm = new Intent(AdminHome.this, AdminOverallMDMStatusActivity.class);
+                startActivity(intent_mdm);
+                break;
+
+            case R.id.btn_create_new_task:
+                Intent intent_ctask = new Intent(AdminHome.this, AdminShowAllTaskTypesActivity.class);
+                intent_ctask.putExtra("EXTRA_SHOW_TASK_TYPE_SESSION_ID", "CREATE");
+                startActivity(intent_ctask);
+                break;
+
+            case R.id.btn_show_all_task:
+                Intent intent_stask = new Intent(AdminHome.this, AdminShowAllTaskTypesActivity.class);
+                intent_stask.putExtra("EXTRA_SHOW_TASK_TYPE_SESSION_ID", "SHOW");
+                startActivity(intent_stask);
+                break;
+
         }
     }
 
@@ -151,4 +180,6 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
         userDetails = gson.fromJson(json, UserBasicDetails.class);
 
     }
+
+
 }

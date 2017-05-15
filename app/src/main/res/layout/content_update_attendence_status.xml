@@ -1019,38 +1019,6 @@
                 card_view:cardBackgroundColor="@color/accent"
                 card_view:cardCornerRadius="5dp">
 
-                <LinearLayout
-                    android:id="@+id/open_points"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="5dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Open Points :"
-                        android:paddingTop="10dp"
-                        android:textSize="24sp"
-                        android:textStyle="bold|italic" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:inputType="textMultiLine"
-                        android:id="@+id/txtv_today_open_points"
-                        android:isScrollContainer="true"
-                        android:hint="Nothing"
-                        android:gravity="top"
-                        android:padding="24dp"
-                        android:background="@drawable/edittextstyle"
-                        />
-
-
-                </LinearLayout>
 
             </android.support.v7.widget.CardView>
 

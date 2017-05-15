@@ -1,6 +1,7 @@
 package com.projects.thakur.apnaschool.Auth;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -247,21 +248,15 @@ public class SignupActivity extends AppCompatActivity {
                                     // Send user login details in mail to user
 
                                     // Send MAIL
-                                    String userBody="Hi User"+"\n \n You Account has been activated in Apna School.\n " +
+                                    String userBody="Hi User"+"\n \n You Account has been activated in Schooltrace App.\n " +
                                             "\n\n Details : \n User ID : "+newuserEmailID+"\n Password : "+password+"\n\n Thanks.\nADMIN";
 
-                                    String userSub="Water Resource Manager Account Activatation!!";
+                                    String userSub="Schooltrace Account Activatation!!";
 
                                     String[] emaildetails={newuserEmailID};
 
-                                    boolean mailStatus=new SendMail(userSub, userBody, emaildetails).send();
-                                    if(mailStatus){
-                                        Toast.makeText(SignupActivity.this, "Mail Send !!",
-                                                Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(SignupActivity.this, "Mail Send FAILED !!",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
+                                    new SendMail(userSub, userBody, emaildetails,"NO", null).send();
+
 
                                     hideProgressDialog();
 

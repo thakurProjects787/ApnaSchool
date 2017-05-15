@@ -204,7 +204,7 @@
                         android:textStyle="normal|bold" />
 
                     <Button
-                        android:id="@+id/btn_open_today_attendencs_window"
+                        android:id="@+id/btn_today_attendencs_status"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -218,7 +218,7 @@
                         android:textStyle="bold" />
 
                     <Button
-                        android:id="@+id/btn_open_today_mdm_window"
+                        android:id="@+id/btn_today_mdm_status"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"

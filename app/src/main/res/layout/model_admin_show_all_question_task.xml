@@ -27,12 +27,12 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txtv_achivments_date_value"
+                    android:id="@+id/txtv_admin_show_all_question_task_last_date_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="Achivment Date"
+                    android:text="Last Date"
                     android:textAlignment="viewEnd"
                     android:textSize="14sp" />
 
@@ -43,41 +43,22 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/txtv_achivments_title_value"
+                    android:id="@+id/txtv_admin_show_all_question_task_heading_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.0"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="Title"
+                    android:text="Heading"
                     android:textColor="@android:color/holo_orange_dark"
                     android:textSize="14sp"
                     android:textStyle="normal|bold" />
 
             </LinearLayout>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/txtv_achivments_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:fontFamily="serif"
-                    android:text="dummy value "
-                    android:textSize="14sp" />
-
-            </LinearLayout>
 
 
         </LinearLayout>

@@ -88,8 +88,25 @@
         <activity
             android:name=".DailyStatus.UpdateAttendenceStatus"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".DailyStatus.UpdateMDMStatus"
+        <activity
+            android:name=".DailyStatus.UpdateMDMStatus"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DailyStatus.AdminOverallAttendenceStatus"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DailyStatus.AdminOverallMDMStatusActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Task.AdminShowAllTaskTypesActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Task.QuestionTask.AdminCreateQuestionTaskActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Task.QuestionTask.AdminShowAllQuestionTaskActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Task.QuestionTask.AdminShowEachQuestionTaskActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
     </application>

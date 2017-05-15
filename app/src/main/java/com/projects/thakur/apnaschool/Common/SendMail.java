@@ -1,5 +1,9 @@
 package com.projects.thakur.apnaschool.Common;
 
+import android.content.Context;
+import android.os.AsyncTask;
+import android.widget.Toast;
+
 import java.util.Date;
 import java.util.Properties;
 import javax.activation.CommandMap;
@@ -40,6 +44,9 @@ public class SendMail extends javax.mail.Authenticator {
 
     private Multipart _multipart;
 
+    private Context context;
+    private String _filename;
+
 
     public SendMail() {
         _host = "smtp.gmail.com"; // default smtp server
@@ -67,15 +74,17 @@ public class SendMail extends javax.mail.Authenticator {
         CommandMap.setDefaultCommandMap(mc);
     }
 
-    public SendMail(String subject, String body,String[] to) {
+    public SendMail(String subject, String body,String[] to, String fileName, Context context) {
         this();
 
         _subject = subject;
         _body = body;
         _to=to;
+        this.context = context;
+        this._filename = fileName;
     }
 
-    public boolean send() {
+    public String prepareMail() {
         Properties props = _setProperties();
 
         if(!_user.equals("") && !_pass.equals("") && _to.length > 0 && !_from.equals("") && !_subject.equals("") && !_body.equals("")) {
@@ -89,7 +98,7 @@ public class SendMail extends javax.mail.Authenticator {
             }catch (Exception e){
                 e.printStackTrace();
                 //logger.addRecordToLog("MAIL MSG SET ERROR : "+e.toString());
-                return false;
+                return "NO";
             }
 
             try {
@@ -104,7 +113,7 @@ public class SendMail extends javax.mail.Authenticator {
             }catch (Exception e){
                 e.printStackTrace();
                 //logger.addRecordToLog("MAIL MSG SETTING ERROR : "+e.toString());
-                return false;
+                return "NO";
             }
 
             try {
@@ -115,8 +124,21 @@ public class SendMail extends javax.mail.Authenticator {
             }catch (Exception e){
                 e.printStackTrace();
                 //logger.addRecordToLog("MAIL setup message body ERROR : "+e.toString());
-                return false;
+                return "NO";
             }
+
+            // add attachemnts
+            if(!_filename.equals("NO")) {
+                try {
+                    addAttachment(_filename);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    //logger.addRecordToLog("MAIL setup message body ERROR : "+e.toString());
+                    return "NO";
+                }
+            }
+
 
             try {
                 // Put parts in message
@@ -124,7 +146,7 @@ public class SendMail extends javax.mail.Authenticator {
             }catch (Exception e){
                 e.printStackTrace();
                 //logger.addRecordToLog("MAIL Put parts in message ERROR : "+e.toString());
-                return false;
+                return "NO";
             }
 
             try {
@@ -133,15 +155,15 @@ public class SendMail extends javax.mail.Authenticator {
             }catch (Exception e){
                 e.printStackTrace();
                 //logger.addRecordToLog("MAIL send email ERROR : "+e.toString());
-                return false;
+                return "NO";
             }
 
-            return true;
+            return "YES";
 
         } else {
             //logger.addRecordToLog("MAIL ERROR : All fields are empty!! ");
             //logger.addRecordToLog(" >> "+_user+" : "+_pass+" : "+ _to+" : "+_from+" : "+_subject+" : "+_body);
-            return false;
+            return "NO";
         }
     }
 
@@ -190,4 +212,36 @@ public class SendMail extends javax.mail.Authenticator {
     }
 
     // more of the getters and setters …..
+
+    private class MailSend extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String[] params) {
+            // do above Server call here
+            return prepareMail();
+        }
+
+        @Override
+        protected void onPostExecute(String message) {
+            //process message
+            if(context!=null) {
+                if (message.equals("YES")) {
+                    Toast.makeText(context.getApplicationContext(), "Mail Send !!",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context.getApplicationContext(), "Mail Send FAILED !!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+
+    //send mail
+    public void send(){
+        MailSend job = new MailSend();
+        job.execute();
+    }
+
+
 }

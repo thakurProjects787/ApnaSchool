@@ -211,7 +211,7 @@ public class AddNewAchivmentsActivity extends AppCompatActivity implements View.
                 //====================== ASK DIALOG BOX ========================================
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AppTheme_Dark_Dialog);
                 alertDialogBuilder.setTitle("SUBMIT");
-                alertDialogBuilder.setMessage("Are you sure,You want to submit today MDM Details ?");
+                alertDialogBuilder.setMessage("Are you sure,You want to Delete Achivment ?");
 
                 alertDialogBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
@@ -263,6 +263,8 @@ public class AddNewAchivmentsActivity extends AppCompatActivity implements View.
 
                     hideProgressDialog();
                 }
+
+                mDatabase.child("UserNode").child(mAuth.getCurrentUser().getUid()).child("Achivments_Info").child(operationStatus).removeEventListener(this);
             }
 
             @Override
@@ -279,7 +281,7 @@ public class AddNewAchivmentsActivity extends AppCompatActivity implements View.
     }
 
 
-    // Delete current Class details
+    // Delete current details
     private void deleteCurrentData(){
 
 

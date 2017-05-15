@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.projects.thakur.apnaschool.AdminUser.AdminHome;
+import com.projects.thakur.apnaschool.Common.CreateExcelReport;
 import com.projects.thakur.apnaschool.Model.UserBasicDetails;
 import com.projects.thakur.apnaschool.NormalUser.NormalUserActivity;
 import com.projects.thakur.apnaschool.R;
@@ -25,18 +27,18 @@ import com.projects.thakur.apnaschool.R;
 public class StartUpActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
-    private ProgressBar progressBar;
+    private DatabaseReference mFirebaseDatabase;
 
     private ProgressDialog mProgressDialog;
 
-    private DatabaseReference mFirebaseDatabase;
-
     static public SharedPreferences mPrefs;
 
-    private UserBasicDetails userDetails;
+    static public UserBasicDetails userDetails;
 
     //activity data
     private String activityData;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,9 @@ public class StartUpActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference("UserNode");
 
+        progressBar = (ProgressBar) findViewById(R.id.startup_progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
         // Get Login User Details
         activityData = getIntent().getStringExtra("EXTRA_SESSION_ID");
 
@@ -57,6 +62,7 @@ public class StartUpActivity extends AppCompatActivity {
         userDetails = new UserBasicDetails();
 
         readUserCurrentData();
+
 
     }
 
@@ -68,7 +74,7 @@ public class StartUpActivity extends AppCompatActivity {
 
     private void getAuthStatus(){
 
-        showProgressDialog();
+        //showProgressDialog();
 
         // app_title change listener
         mFirebaseDatabase.child(auth.getCurrentUser().getUid()).child("user_Type").addValueEventListener(new ValueEventListener() {
@@ -97,7 +103,7 @@ public class StartUpActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError error) {
 
-                hideProgressDialog();
+                //hideProgressDialog();
 
                 // Failed to read value
                 Log.e("STARTUP", "Failed to read value.", error.toException());
@@ -111,7 +117,7 @@ public class StartUpActivity extends AppCompatActivity {
      */
     private void readUserCurrentData(){
 
-        showProgressDialog();
+        //showProgressDialog();
 
         // app_title change listener
         mFirebaseDatabase.child(auth.getCurrentUser().getUid()).child("School_Basic_Info").addValueEventListener(new ValueEventListener() {
@@ -135,7 +141,7 @@ public class StartUpActivity extends AppCompatActivity {
 
 
 
-                hideProgressDialog();
+               // hideProgressDialog();
 
             }
 
@@ -143,7 +149,7 @@ public class StartUpActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 Log.e(">> ", "Failed to read value.", error.toException());
-                hideProgressDialog();
+                //hideProgressDialog();
             }
         });
 

@@ -20,8 +20,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.projects.thakur.apnaschool.Auth.StartUpActivity;
 import com.projects.thakur.apnaschool.Model.DailyMDMStatus;
 import com.projects.thakur.apnaschool.Model.MDMDetails;
+import com.projects.thakur.apnaschool.Model.UserBasicDetails;
 import com.projects.thakur.apnaschool.R;
 
 import java.text.SimpleDateFormat;
@@ -163,7 +165,7 @@ public class UpdateMDMStatus extends AppCompatActivity implements View.OnClickLi
             } else {
                 txtv_mdm_present_students.setError(null);
 
-                mdmStudentsDetails =  presents+"#"+absents;
+                mdmStudentsDetails =  totalMDMStudents+"#"+presents+"#"+absents;
             }
 
         }
@@ -200,6 +202,10 @@ public class UpdateMDMStatus extends AppCompatActivity implements View.OnClickLi
                     txtv_mdm_rice_used_amount.setError(null);
 
                     mdmriceStockDetails = usedRiceAmount + "#" + currentAmount;
+
+                    // update current amount details at MDM node
+                    updateRiceStockDetails(Integer.toString(currentAmount));
+
                 }
             }
 
@@ -237,6 +243,10 @@ public class UpdateMDMStatus extends AppCompatActivity implements View.OnClickLi
                     todayMDMStatus.setMdmStudentsDetails(mdmStudentsDetails);
                     todayMDMStatus.setMdmRiceStockDetails(mdmriceStockDetails);
                     todayMDMStatus.setMdmtodayMenu(todayMDMMenuDetails);
+
+                    UserBasicDetails schoolDetails = new StartUpActivity().userDetails;
+                    todayMDMStatus.setSchool_details(schoolDetails.getId()+"#"+schoolDetails.getName()+"#"+schoolDetails.getDistt()+"#"+schoolDetails.getSchool_emailID());
+
 
 
                     // Get current date
@@ -348,6 +358,13 @@ public class UpdateMDMStatus extends AppCompatActivity implements View.OnClickLi
 
 
     }//end of fcn
+
+    /*
+      Update rice amount into MDM node
+     */
+    private void updateRiceStockDetails(String amount){
+        mDatabase.child("UserNode").child(mAuth.getCurrentUser().getUid()).child("MDM_Info").child("rice_stock").setValue(amount);
+    }
 
     @Override
     public void onClick(View v) {

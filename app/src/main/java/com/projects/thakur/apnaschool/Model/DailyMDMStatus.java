@@ -6,9 +6,19 @@ public class DailyMDMStatus {
     private String mdmStudentsDetails = "";
     private String mdmRiceStockDetails = "";
     private String mdmtodayMenu = "";
+    private String school_details = "";
 
 
     public DailyMDMStatus() {
+    }
+
+
+    public String getSchool_details() {
+        return school_details;
+    }
+
+    public void setSchool_details(String school_details) {
+        this.school_details = school_details;
     }
 
     public String getMdmStudentsDetails() {

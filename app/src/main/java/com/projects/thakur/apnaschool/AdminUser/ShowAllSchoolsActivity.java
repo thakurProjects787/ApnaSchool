@@ -152,7 +152,6 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
      */
     private void readSchoolDetails(String schoolDataID){
 
-        // app_title change listener
         mDatabase.child("UserNode").child(schoolDataID).child("School_Basic_Info").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -173,7 +172,7 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
-                Log.e(">> ", "Failed to read app title value.", error.toException());
+                Log.e(">> ", "Failed to read value.", error.toException());
                 hideProgressDialog();
             }
         });

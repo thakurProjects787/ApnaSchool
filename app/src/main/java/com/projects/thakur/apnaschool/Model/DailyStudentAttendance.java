@@ -7,7 +7,7 @@ public class DailyStudentAttendance {
     private String calculated_attnd = "";
     private String all_classes_attnd = "";
     private String all_teachers_sttnd = "";
-    private String any_open_points = "";
+    private String school_details = "";
 
     public DailyStudentAttendance() {
     }
@@ -36,12 +36,12 @@ public class DailyStudentAttendance {
         this.all_teachers_sttnd = all_teachers_sttnd;
     }
 
-    public String getAny_open_points() {
-        return any_open_points;
+    public String getSchool_details() {
+        return school_details;
     }
 
-    public void setAny_open_points(String any_open_points) {
-        this.any_open_points = any_open_points;
+    public void setSchool_details(String school_details) {
+        this.school_details = school_details;
     }
 
 

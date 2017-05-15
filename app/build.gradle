@@ -25,6 +25,13 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+
+    compile files('libs/activation.jar')
+    compile files('libs/additionnal.jar')
+    compile files('libs/mail.jar')
+    compile files('libs/poi-3.8.jar')
+    compile files('libs/jxl.jar')
+
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:23.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta5'
@@ -34,15 +41,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
     testCompile 'junit:junit:4.12'
 }
-
-
-
-
-
-
-
-
-
 
 
 

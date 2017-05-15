@@ -21,8 +21,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.projects.thakur.apnaschool.Auth.StartUpActivity;
 import com.projects.thakur.apnaschool.Model.ClassDetails;
 import com.projects.thakur.apnaschool.Model.DailyStudentAttendance;
+import com.projects.thakur.apnaschool.Model.UserBasicDetails;
 import com.projects.thakur.apnaschool.R;
 
 import java.text.SimpleDateFormat;
@@ -51,7 +53,7 @@ public class UpdateAttendenceStatus extends AppCompatActivity implements View.On
     private EditText txtv_Class_VI_present_students,txtv_Class_VII_present_students,txtv_Class_VIII_present_students,txtv_Class_IX_present_students,txtv_Class_X_present_students;
     private EditText txtv_Class_XI_present_students,txtv_Class_XII_present_students;
 
-    private EditText txtv_school_present_teachers,txtv_today_open_points;
+    private EditText txtv_school_present_teachers;
 
     //Textview
     private TextView txtv_Class_I_name,txtv_Class_II_name,txtv_Class_III_name,txtv_Class_IV_name,txtv_Class_V_name;
@@ -67,7 +69,7 @@ public class UpdateAttendenceStatus extends AppCompatActivity implements View.On
     private CardView Class_VI_card_view,Class_VIII_card_view,Class_VII_card_view,Class_IX_card_view,Class_X_card_view,Class_XI_card_view,Class_XII_card_view;
 
     //Store details
-    private String teachers_details,openPoints;
+    private String teachers_details;
 
     private String all_classes_details;
     private String todaySubmitDate;
@@ -174,8 +176,6 @@ public class UpdateAttendenceStatus extends AppCompatActivity implements View.On
 
         //Teachers details
         txtv_school_total_teachers = (TextView) findViewById(R.id.txtv_school_total_teachers);
-
-        txtv_today_open_points = (EditText) findViewById(R.id.txtv_today_open_points);
         txtv_school_present_teachers = (EditText) findViewById(R.id.txtv_school_present_teachers);
 
 
@@ -807,11 +807,9 @@ public class UpdateAttendenceStatus extends AppCompatActivity implements View.On
                 txtv_school_present_teachers.setError(null);
 
 
-                teachers_details =  "Teachers"+"#"+presents+"#"+absents;
+                teachers_details =  totalTeachers+"#"+presents+"#"+absents;
             }
 
-            // read open points details
-            openPoints = txtv_today_open_points.getText().toString();
         }
 
         return vaidation_status;
@@ -853,7 +851,9 @@ public class UpdateAttendenceStatus extends AppCompatActivity implements View.On
                     todayAttendence.setCalculated_attnd(calculatedDetails);
                     todayAttendence.setAll_classes_attnd(all_classes_details);
                     todayAttendence.setAll_teachers_sttnd(teachers_details);
-                    todayAttendence.setAny_open_points(openPoints);
+
+                    UserBasicDetails schoolDetails = new StartUpActivity().userDetails;
+                    todayAttendence.setSchool_details(schoolDetails.getId()+"#"+schoolDetails.getName()+"#"+schoolDetails.getDistt()+"#"+schoolDetails.getSchool_emailID());
 
                     // Get current date
                     Calendar calendar = Calendar.getInstance();
