@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#448aff</color>
+    <color name="colorPrimary">#2979ff</color>
     <color name="colorPrimaryDark">#2962ff</color>
     <color name="colorAccent">#ffffff</color>
 
-    <color name="bg_login">#26ae90</color>
+    <color name="bg_login">#cff952</color>
     <color name="bg_register">#2e3237</color>
     <color name="bg_main">#428bca</color>
     <color name="white">#ffffff</color>
@@ -19,7 +19,7 @@
     <color name="btn_logut_bg">#ff6861</color>
 
 
-    <color name="primary">#448aff</color>
+    <color name="primary">#2979ff</color>
     <color name="primary_dark">#2979ff</color>
     <color name="primary_darker">#2962ff</color>
     <color name="accent">#ffffff</color>

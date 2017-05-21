@@ -24,7 +24,7 @@ import java.util.Locale;
 
 public class CreateExcelReport {
 
-    static public String folderName = "/sdcard/Files/ApnaSchool";
+    static public String folderName = "/sdcard/Files/SchoolTrac";
 
     //logger
     static public Logger logger;
@@ -32,7 +32,7 @@ public class CreateExcelReport {
      /*
         Generate Attendence Report
       */
-    static public boolean generateAttndReport(String fileName,Context context) {
+    static public boolean generateAttndReport(String fileName,Context context,String emailID) {
 
         //logger.addRecordToLog("MSG : Write Data");
 
@@ -190,13 +190,16 @@ public class CreateExcelReport {
             label2 = new Label(1, 3, "School Details" , arial12BoldFormat);
             eachSchoolSheet.addCell(label2);
 
-            label2 = new Label(2, 3, "Students" , arial12BoldFormat);
+            label2 = new Label(2, 3, "District" , arial12BoldFormat);
             eachSchoolSheet.addCell(label2);
 
-            label2 = new Label(3, 3, "Teachers" , arial12BoldFormat);
+            label2 = new Label(3, 3, "Students" , arial12BoldFormat);
             eachSchoolSheet.addCell(label2);
 
-            label2 = new Label(4, 3, "Classes" , arial12BoldFormat);
+            label2 = new Label(4, 3, "Teachers" , arial12BoldFormat);
+            eachSchoolSheet.addCell(label2);
+
+            label2 = new Label(5, 3, "Classes" , arial12BoldFormat);
             eachSchoolSheet.addCell(label2);
 
             int sch_rowno = 4;
@@ -211,6 +214,7 @@ public class CreateExcelReport {
 
                 String school_id = "";
                 String school_Details = "";
+                String district = "";
 
                 String teachers_Details = "";
                 String students_details = "";
@@ -222,8 +226,8 @@ public class CreateExcelReport {
                 if(details.split("&")[1].equals("NS")){
 
                     school_id = details.split("&")[0].split("#")[0];
-                    school_Details = "Name : "+details.split("&")[0].split("#")[1]+" \nDistrict : " + details.split("&")[0].split("#")[2] + "\nEmail ID : " + details.split("&")[0].split("#")[3];
-
+                    school_Details = "Name : "+details.split("&")[0].split("#")[1] + "\nEmail ID : " + details.split("&")[0].split("#")[3];
+                    district = details.split("&")[0].split("#")[2];
 
                     teachers_Details = "Not Submitted";
                     students_details = "Not Submitted";
@@ -232,10 +236,11 @@ public class CreateExcelReport {
                 } else {
 
                     school_id = details.split("&")[0].split("#")[0];
-                    school_Details = "Name : "+details.split("&")[0].split("#")[1]+" \nDistrict : " + details.split("&")[0].split("#")[2] + "\nEmail ID : " + details.split("&")[0].split("#")[3];
+                    school_Details = "Name : "+details.split("&")[0].split("#")[1] + "\nEmail ID : " + details.split("&")[0].split("#")[3];
+                    district = details.split("&")[0].split("#")[2];
 
-                    teachers_Details = details.split("&")[1].replace("#"," - ");
-                    students_details = details.split("&")[2].replace("#"," - ");
+                    teachers_Details = "T : "+details.split("&")[1].split("#")[0]+"\nP : "+details.split("&")[1].split("#")[1]+"\nA : "+details.split("&")[1].split("#")[2];
+                    students_details = "T : "+details.split("&")[2].split("#")[0]+"\nP : "+details.split("&")[2].split("#")[1]+"\nA : "+details.split("&")[2].split("#")[2];
                     classess_details = details.split("&")[3].replace("%","\n").replace("#"," - ");
 
                     cellFormat = submittedformat;
@@ -249,13 +254,16 @@ public class CreateExcelReport {
                 label2 = new Label(1, sch_rowno, school_Details , arial12format);
                 eachSchoolSheet.addCell(label2);
 
-                label2 = new Label(2, sch_rowno, teachers_Details, arial12format);
+                label2 = new Label(2, sch_rowno, district , arial12format);
                 eachSchoolSheet.addCell(label2);
 
-                label2 = new Label(3, sch_rowno, students_details, arial12format);
+                label2 = new Label(3, sch_rowno, teachers_Details, arial12format);
                 eachSchoolSheet.addCell(label2);
 
-                label2 = new Label(4, sch_rowno, classess_details, arial12format);
+                label2 = new Label(4, sch_rowno, students_details, arial12format);
+                eachSchoolSheet.addCell(label2);
+
+                label2 = new Label(5, sch_rowno, classess_details, arial12format);
                 eachSchoolSheet.addCell(label2);
 
 
@@ -290,9 +298,18 @@ public class CreateExcelReport {
 
         String userSub="Attendence Details!";
 
-        String[] emaildetails={new StartUpActivity().userDetails.getSchool_emailID()};
+        if(emailID.equals("DEFAULT")) {
 
-        new SendMail(userSub, userBody, emaildetails,folderName+"/"+fileName, context).send();
+            String[] emaildetails = {new StartUpActivity().userDetails.getSchool_emailID()};
+
+            new SendMail(userSub, userBody, emaildetails, folderName + "/" + fileName, context).send();
+
+        } else {
+
+            String[] emaildetails = {emailID};
+
+            new SendMail(userSub, userBody, emaildetails, folderName + "/" + fileName, context).send();
+        }
 
         return success;
 
@@ -301,7 +318,7 @@ public class CreateExcelReport {
     /*
         Generate MDM Report
       */
-    static public boolean generateMDMReport(String fileName,Context context) {
+    static public boolean generateMDMReport(String fileName,Context context,String emailID) {
 
         //logger.addRecordToLog("MSG : Write Data");
 
@@ -451,13 +468,16 @@ public class CreateExcelReport {
             label2 = new Label(1, 3, "School Details" , arial12BoldFormat);
             eachSchoolSheet.addCell(label2);
 
-            label2 = new Label(2, 3, "Students" , arial12BoldFormat);
+            label2 = new Label(2, 3, "District" , arial12BoldFormat);
             eachSchoolSheet.addCell(label2);
 
-            label2 = new Label(3, 3, "Rice" , arial12BoldFormat);
+            label2 = new Label(3, 3, "Students" , arial12BoldFormat);
             eachSchoolSheet.addCell(label2);
 
-            label2 = new Label(4, 3, "MDM Menu" , arial12BoldFormat);
+            label2 = new Label(4, 3, "Rice" , arial12BoldFormat);
+            eachSchoolSheet.addCell(label2);
+
+            label2 = new Label(5, 3, "MDM Menu" , arial12BoldFormat);
             eachSchoolSheet.addCell(label2);
 
             int sch_rowno = 4;
@@ -472,6 +492,7 @@ public class CreateExcelReport {
 
                 String school_id = "";
                 String school_Details = "";
+                String district = "";
 
                 String students_details = "";
                 String ricestock_Details = "";
@@ -483,7 +504,8 @@ public class CreateExcelReport {
                 if(details.split("&")[1].equals("NS")){
 
                     school_id = details.split("&")[0].split("#")[0];
-                    school_Details = "Name : "+details.split("&")[0].split("#")[1]+" \nDistrict : " + details.split("&")[0].split("#")[2] + "\nEmail ID : " + details.split("&")[0].split("#")[3];
+                    school_Details = "Name : "+details.split("&")[0].split("#")[1] + "\nEmail ID : " + details.split("&")[0].split("#")[3];
+                    district = details.split("&")[0].split("#")[2];
 
 
                     ricestock_Details = "Not Submitted";
@@ -493,7 +515,8 @@ public class CreateExcelReport {
                 } else {
 
                     school_id = details.split("&")[0].split("#")[0];
-                    school_Details = "Name : "+details.split("&")[0].split("#")[1]+" \nDistrict : " + details.split("&")[0].split("#")[2] + "\nEmail ID : " + details.split("&")[0].split("#")[3];
+                    school_Details = "Name : "+details.split("&")[0].split("#")[1] + "\nEmail ID : " + details.split("&")[0].split("#")[3];
+                    district = details.split("&")[0].split("#")[2];
 
                     students_details = "T : "+details.split("&")[1].split("#")[0]+"\nP : "+details.split("&")[1].split("#")[1]+"\nA : "+details.split("&")[1].split("#")[2];
                     ricestock_Details = "Used : "+details.split("&")[2].split("#")[0]+"\nStock : "+details.split("&")[2].split("#")[1];
@@ -510,13 +533,16 @@ public class CreateExcelReport {
                 label2 = new Label(1, sch_rowno, school_Details , arial12format);
                 eachSchoolSheet.addCell(label2);
 
-                label2 = new Label(2, sch_rowno, students_details, arial12format);
+                label2 = new Label(2, sch_rowno, district , arial12format);
                 eachSchoolSheet.addCell(label2);
 
-                label2 = new Label(3, sch_rowno, ricestock_Details, arial12format);
+                label2 = new Label(3, sch_rowno, students_details, arial12format);
                 eachSchoolSheet.addCell(label2);
 
-                label2 = new Label(4, sch_rowno, mdmmenu_details, arial12format);
+                label2 = new Label(4, sch_rowno, ricestock_Details, arial12format);
+                eachSchoolSheet.addCell(label2);
+
+                label2 = new Label(5, sch_rowno, mdmmenu_details, arial12format);
                 eachSchoolSheet.addCell(label2);
 
 
@@ -551,9 +577,19 @@ public class CreateExcelReport {
 
         String userSub="MDM Report";
 
-        String[] emaildetails={new StartUpActivity().userDetails.getSchool_emailID()};
+        if(emailID.equals("DEFAULT")) {
 
-        new SendMail(userSub, userBody, emaildetails,folderName+"/"+fileName, context).send();
+            String[] emaildetails={new StartUpActivity().userDetails.getSchool_emailID()};
+
+            new SendMail(userSub, userBody, emaildetails,folderName+"/"+fileName, context).send();
+
+        } else {
+
+            String[] emaildetails = {emailID};
+
+            new SendMail(userSub, userBody, emaildetails, folderName + "/" + fileName, context).send();
+        }
+
 
         return success;
 
@@ -562,7 +598,7 @@ public class CreateExcelReport {
     /*
         Generate Question Task Report
       */
-    static public boolean generateQuestionTaskReport(String fileName,Context context) {
+    static public boolean generateQuestionTaskReport(String fileName,Context context,String emailID) {
 
         //logger.addRecordToLog("MSG : Write Data");
 
@@ -657,7 +693,7 @@ public class CreateExcelReport {
             label = new Label(3, 4, taskDetails.split("&")[0] , arial12format);
             excelSheet1.addCell(label);
 
-            label = new Label(3, 5, taskDetails.split("&")[2] , arial12format);
+            label = new Label(3, 5, taskDetails.split("&")[2].replace("%","\n") , arial12format);
             excelSheet1.addCell(label);
 
             label = new Label(3, 6, taskDetails.split("&")[1] , arial12format);
@@ -675,7 +711,10 @@ public class CreateExcelReport {
             label2 = new Label(1, 3, "School Details" , arial12BoldFormat);
             eachSchoolSheet.addCell(label2);
 
-            label2 = new Label(2, 3, "Answer" , arial12BoldFormat);
+            label2 = new Label(2, 3, "District" , arial12BoldFormat);
+            eachSchoolSheet.addCell(label2);
+
+            label2 = new Label(3, 3, "Answer" , arial12BoldFormat);
             eachSchoolSheet.addCell(label2);
 
             int sch_rowno = 4;
@@ -688,6 +727,7 @@ public class CreateExcelReport {
 
                 String school_id = "";
                 String school_Details = "";
+                String district = "";
 
                 String answer = "";
 
@@ -697,8 +737,8 @@ public class CreateExcelReport {
                 if(details.split("#")[1].equals("NA")){
 
                     school_id = details.split("#")[0].split("&")[0];
-                    school_Details = "Name : "+details.split("#")[0].split("&")[1]+" \nPlace : " + details.split("#")[0].split("&")[2] + "\nDistrict : " + details.split("#")[0].split("&")[3];
-
+                    school_Details = "Name : "+details.split("#")[0].split("&")[1]+" \nPlace : " + details.split("#")[0].split("&")[2] ;
+                    district = details.split("#")[0].split("&")[3];
 
                     answer = "Not Submitted";
 
@@ -706,9 +746,10 @@ public class CreateExcelReport {
                 } else {
 
                     school_id = details.split("#")[0].split("&")[0];
-                    school_Details = "Name : "+details.split("#")[0].split("&")[1]+" \nPlace : " + details.split("#")[0].split("&")[2] + "\nDistrict : " + details.split("#")[0].split("&")[3];
+                    school_Details = "Name : "+details.split("#")[0].split("&")[1]+" \nPlace : " + details.split("#")[0].split("&")[2] ;
+                    district = details.split("#")[0].split("&")[3];
 
-                    answer = details.split("#")[1];
+                    answer = details.split("#")[1].replace("%","\n");
 
                     cellFormat = submittedformat;
                 }
@@ -721,7 +762,10 @@ public class CreateExcelReport {
                 label2 = new Label(1, sch_rowno, school_Details , arial12format);
                 eachSchoolSheet.addCell(label2);
 
-                label2 = new Label(2, sch_rowno, answer, arial12format);
+                label2 = new Label(2, sch_rowno, district , arial12format);
+                eachSchoolSheet.addCell(label2);
+
+                label2 = new Label(3, sch_rowno, answer, arial12format);
                 eachSchoolSheet.addCell(label2);
 
 
@@ -756,9 +800,18 @@ public class CreateExcelReport {
 
         String userSub="Task Report";
 
-        String[] emaildetails={new StartUpActivity().userDetails.getSchool_emailID()};
+        if(emailID.equals("DEFAULT")) {
 
-        new SendMail(userSub, userBody, emaildetails,folderName+"/"+fileName, context).send();
+            String[] emaildetails={new StartUpActivity().userDetails.getSchool_emailID()};
+
+            new SendMail(userSub, userBody, emaildetails,folderName+"/"+fileName, context).send();
+
+        } else {
+
+            String[] emaildetails = {emailID};
+
+            new SendMail(userSub, userBody, emaildetails, folderName + "/" + fileName, context).send();
+        }
 
         return success;
 

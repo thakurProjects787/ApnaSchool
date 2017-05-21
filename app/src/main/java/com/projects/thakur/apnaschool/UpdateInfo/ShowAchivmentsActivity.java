@@ -55,7 +55,7 @@ public class ShowAchivmentsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.show_all_achivments_toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Achivments");
+        getSupportActionBar().setTitle("Achievements");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

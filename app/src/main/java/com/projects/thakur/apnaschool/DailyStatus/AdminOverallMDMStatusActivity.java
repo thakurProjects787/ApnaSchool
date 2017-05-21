@@ -1,13 +1,19 @@
 package com.projects.thakur.apnaschool.DailyStatus;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +42,8 @@ public class AdminOverallMDMStatusActivity extends AppCompatActivity {
 
     //logger
     private Logger logger;
+
+    private Context context;
 
     private ProgressDialog mProgressDialog;
 
@@ -339,17 +347,76 @@ public class AdminOverallMDMStatusActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.admin_overall_attnd_status_send_report) {
 
-            showProgressDialog();
+            if(txtv_admin_daily_attn_tot_schools_present_value.getText().equals("0")){
 
-            String fileName = "MDMReport_"+todaySubmitDate+".xls";
+                Toast.makeText(getApplicationContext(), "No one has submitted !!", Toast.LENGTH_LONG).show();
 
-            if(new CreateExcelReport().generateMDMReport(fileName,this)){
-                Toast.makeText(getApplicationContext(), "Report Generated : "+fileName, Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(getApplicationContext(), "Report Not Generated", Toast.LENGTH_LONG).show();
-            }
 
-            hideProgressDialog();
+                // Ask for another email ID.
+                 /* Alert Dialog Code Start*/
+                AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.AppTheme_Dark_Dialog);
+                alert.setTitle("SEND REPORT"); //Set Alert dialog title here
+                alert.setMessage("If you want report on new email id , please provide new email id address.\n\nOtherwise it will send to your default email ID."); //Message here
+
+
+                // Set an EditText view to get user input
+                final EditText input = new EditText(getApplicationContext());
+                input.setInputType(InputType.TYPE_CLASS_TEXT );
+                input.setTextColor(Color.BLACK);
+                alert.setView(input);
+
+                alert.setPositiveButton("NEW", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //You will get as string input data in this variable.
+                        // here we convert the input to a string and show in a toast.
+                        String keyword = input.getEditableText().toString();
+                        //Toast.makeText(getApplicationContext(),srt,Toast.LENGTH_LONG).show();
+                        if (!keyword.isEmpty() && (keyword.contains("@")) && (keyword.contains(".com"))) {
+
+
+                            String fileName = "MDMReport_" + todaySubmitDate + ".xls";
+
+                            if (new CreateExcelReport().generateMDMReport(fileName, context,keyword)) {
+                                Toast.makeText(getApplicationContext(), "Report Generated : " + fileName, Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Report Not Generated", Toast.LENGTH_LONG).show();
+                            }
+
+
+
+                        } else {
+                            //Toast.makeText(getApplicationContext(), "Wrong Password !!", Toast.LENGTH_LONG).show();
+
+                            dialog.cancel();
+                        }
+
+
+                    } // End of onClick(DialogInterface dialog, int whichButton)
+                }); //End of alert.setPositiveButton
+                alert.setNegativeButton("DEFAULT", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                        //Toast.makeText(getApplicationContext(), "Nothing!", Toast.LENGTH_LONG).show();
+
+                        String fileName = "MDMReport_" + todaySubmitDate + ".xls";
+
+                        if (new CreateExcelReport().generateMDMReport(fileName, context,"DEFAULT")) {
+                            Toast.makeText(getApplicationContext(), "Report Generated : " + fileName, Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Report Not Generated", Toast.LENGTH_LONG).show();
+                        }
+
+
+
+                        dialog.cancel();
+                    }
+                }); //End of alert.setNegativeButton
+                AlertDialog alertDialog = alert.create();
+                alertDialog.show();
+                /* Alert Dialog Code End*/
+
+            }
 
 
         }

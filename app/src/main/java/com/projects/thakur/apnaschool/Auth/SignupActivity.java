@@ -118,6 +118,7 @@ public class SignupActivity extends AppCompatActivity {
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
+                                    hideProgressDialog();
                                     Toast.makeText(SignupActivity.this, "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
                                 } else {
@@ -143,6 +144,7 @@ public class SignupActivity extends AppCompatActivity {
                                     schoolBasicInfo.setDistt("-");
                                     schoolBasicInfo.setPin_code("-");
                                     schoolBasicInfo.setGps_location("-");
+                                    schoolBasicInfo.setState(getResources().getString(R.string.school_state_name));
 
                                     schoolBasicInfo.setContact_details("-");
 
@@ -283,7 +285,7 @@ public class SignupActivity extends AppCompatActivity {
                                                         //btnLogin.setEnabled(true);
 
                                                     } else {
-                                                        Intent intent = new Intent(SignupActivity.this, AdminHome.class);
+                                                        Intent intent = new Intent(SignupActivity.this, StartUpActivity.class);
                                                         intent.putExtra("EXTRA_SESSION_ID", userdetails);
                                                         startActivity(intent);
                                                         finish();

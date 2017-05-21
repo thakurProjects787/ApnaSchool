@@ -11,25 +11,22 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/colorPrimary"
+        android:background="@color/bg_login"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <ImageView
-            android:layout_width="@dimen/logo_w_h"
-            android:layout_height="@dimen/logo_w_h"
+            android:id="@+id/imageView"
+            android:layout_width="326dp"
+            android:layout_height="281dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
-            android:src="@mipmap/ic_launcher" />
+            android:layout_weight="0.74"
+            android:src="@drawable/schooltrac_logo_with_name" />
 
 
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/startup_progressBar"
-        android:layout_width="87dp"
-        android:layout_height="67dp"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="20dp"
-        android:visibility="visible" />
+
 </android.support.design.widget.CoordinatorLayout>

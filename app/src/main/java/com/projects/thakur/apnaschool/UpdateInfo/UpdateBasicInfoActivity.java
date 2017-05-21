@@ -83,9 +83,11 @@ public class UpdateBasicInfoActivity extends AppCompatActivity implements View.O
         edtxt_cmp_address = (EditText) findViewById(R.id.school_cmp_address);
         edtxt_palce_name = (EditText) findViewById(R.id.school_place_name);
         edtxt_distt = (EditText) findViewById(R.id.school_distt);
+
         edtxt_state = (EditText) findViewById(R.id.school_state);
         edtxt_state.setText(R.string.school_state_name);
         edtxt_state.setEnabled(false);
+
 
         edtxt_pincode = (EditText) findViewById(R.id.school_pincode);
         edtxt_gps = (EditText) findViewById(R.id.school_gps_location);
@@ -237,12 +239,7 @@ public class UpdateBasicInfoActivity extends AppCompatActivity implements View.O
         }
 
         school_state = edtxt_state.getText().toString();
-        if (TextUtils.isEmpty(school_state)){
-            edtxt_state.setError("Please enter valid details !!");
-            vaidation_status = false;
-        } else {
-            edtxt_state.setError(null);
-        }
+
 
         school_pincode = edtxt_pincode.getText().toString();
         if (TextUtils.isEmpty(school_pincode)){
@@ -253,6 +250,7 @@ public class UpdateBasicInfoActivity extends AppCompatActivity implements View.O
         }
 
         school_gps_loc = edtxt_gps.getText().toString();
+
 
 
         school_contacts = edtxt_contacts.getText().toString();

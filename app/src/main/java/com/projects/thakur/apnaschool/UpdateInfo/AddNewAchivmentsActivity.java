@@ -56,7 +56,7 @@ public class AddNewAchivmentsActivity extends AppCompatActivity implements View.
         Toolbar toolbar = (Toolbar) findViewById(R.id.add_new_achivments_toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("New Achivments");
+        getSupportActionBar().setTitle("New Achievements");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

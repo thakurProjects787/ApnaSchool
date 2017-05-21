@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "173930145353",
-    "firebase_url": "https://apnaschool-14636.firebaseio.com",
-    "project_id": "apnaschool-14636",
-    "storage_bucket": "apnaschool-14636.appspot.com"
+    "project_number": "815701090635",
+    "firebase_url": "https://schooltrac-44fca.firebaseio.com",
+    "project_id": "schooltrac-44fca",
+    "storage_bucket": "schooltrac-44fca.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:173930145353:android:6ed62b5be1a96fe3",
+        "mobilesdk_app_id": "1:815701090635:android:6ed62b5be1a96fe3",
         "android_client_info": {
           "package_name": "com.projects.thakur.apnaschool"
         }
       },
       "oauth_client": [
         {
-          "client_id": "173930145353-jd3hjf3d2v5mjq0lcc75j1r8ivh5djbg.apps.googleusercontent.com",
+          "client_id": "815701090635-8ctpnf8ndha546e6v74ihce6i7o7i8mc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.projects.thakur.apnaschool",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "173930145353-fode9st61bd28rgmlq2jg5na1jiiqa23.apps.googleusercontent.com",
+          "client_id": "815701090635-3k8t506v1feli1kcstl0rbs0fraqpri5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAa3b4CWMc4wDpIz4w4XFDIobC7G4GKig4"
+          "current_key": "AIzaSyDrTk5DG7E7Omx5ZsBWesl0HEATj_cHv_I"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "173930145353-fode9st61bd28rgmlq2jg5na1jiiqa23.apps.googleusercontent.com",
+              "client_id": "815701090635-3k8t506v1feli1kcstl0rbs0fraqpri5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

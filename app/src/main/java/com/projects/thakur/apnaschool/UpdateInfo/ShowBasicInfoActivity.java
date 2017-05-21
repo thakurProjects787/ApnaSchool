@@ -1,6 +1,7 @@
 package com.projects.thakur.apnaschool.UpdateInfo;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +18,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.projects.thakur.apnaschool.Common.Logger;
+import com.projects.thakur.apnaschool.Common.Maps.DisplaySchoolsOnMaps;
 import com.projects.thakur.apnaschool.Model.UserBasicDetails;
 import com.projects.thakur.apnaschool.R;
 
@@ -27,6 +30,8 @@ public class ShowBasicInfoActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
 
     private ProgressDialog mProgressDialog;
+
+    private Context context;
 
     // get current user details
     UserBasicDetails currentUserDetails;
@@ -131,6 +136,17 @@ public class ShowBasicInfoActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.view_on_map) {
+
+            Intent intent = new Intent(ShowBasicInfoActivity.this, DisplaySchoolsOnMaps.class);
+            intent.putExtra("EXTRA_SCHOOL_ON_MAP_SESSION_ID", "ALL");
+            startActivity(intent);
+
+            return true;
+        }
+
+
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -139,6 +155,8 @@ public class ShowBasicInfoActivity extends AppCompatActivity {
        Read data from firebase database
      */
     private void readUserCurrentData(){
+
+        new Logger().deleteFile("locations.txt",context);
 
         showProgressDialog();
 
@@ -169,6 +187,14 @@ public class ShowBasicInfoActivity extends AppCompatActivity {
                 txtv_total_service_staff_value.setText(currentUserDetails.getTotal_service_staff());
 
                 txtv_school_desc_value.setText(currentUserDetails.getSchool_description());
+
+                //  lat + "#" + lng + "#" + name + "#" + mapDisplayLine + "%";
+                if(!currentUserDetails.getGps_location().equals("-")) {
+                    String schoolLocationDetails = "MAPS@" + currentUserDetails.getGps_location().split(",")[1] + "#" + currentUserDetails.getGps_location().split(",")[0] + "#" + currentUserDetails.getName() + "#" + currentUserDetails.getPlace_name() + "," + currentUserDetails.getDistt();
+
+                    new Logger().addDataIntoFile("locations.txt", schoolLocationDetails, context);
+                }
+
 
                 hideProgressDialog();
 

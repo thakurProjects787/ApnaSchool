@@ -2,10 +2,14 @@ package com.projects.thakur.apnaschool.AdminUser;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,8 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import com.projects.thakur.apnaschool.AdminUser.NewUserDetails;
+import com.projects.thakur.apnaschool.Common.Logger;
+import com.projects.thakur.apnaschool.Common.Maps.DisplaySchoolsOnMaps;
 import com.projects.thakur.apnaschool.Model.UserBasicDetails;
 import com.projects.thakur.apnaschool.R;
 import com.projects.thakur.apnaschool.UpdateInfo.ShowEachSchoolDetails;
@@ -38,14 +45,15 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
 
     ArrayList<UserBasicDetails> allEachSchoolsDetails = new ArrayList<>();
 
-    //Get all schools location details
-    ArrayList<String> allSchoolsLocations = new ArrayList<>();
-
     //List View
     ListView allDetails;
 
+    private String searchKeyword;
+
     //Inner class object
     ShowSchoolAdapter adapter;
+
+    private Context context;
 
     ProgressDialog mProgressDialog;
 
@@ -81,6 +89,8 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
 
         allDetails.setAdapter(adapter);
 
+        searchKeyword = "ALL";
+
         getDataFromServer();
 
 
@@ -103,14 +113,63 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
 
         if (id == R.id.show_all_schools_on_map) {
 
-            //Intent intent = new Intent(ShowAllSchoolsActivity.this, AddNewTeachersInfo.class);
-            //intent.putExtra("EXTRA_TEACHER_INFO_SESSION_ID", "ADD_NEW");
-            //startActivity(intent);
+            Intent intent = new Intent(ShowAllSchoolsActivity.this, DisplaySchoolsOnMaps.class);
+            intent.putExtra("EXTRA_SCHOOL_ON_MAP_SESSION_ID", "ALL");
+            startActivity(intent);
 
             return true;
         }
 
-        if (id == R.id.send_all_schools_details_on_mail) {
+        if (id == R.id.filter_schools_details_from_all) {
+
+            /* Alert Dialog Code Start*/
+            AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.AppTheme_Dark_Dialog);
+            alert.setTitle("KEYWORD"); //Set Alert dialog title here
+            alert.setMessage("Please type search keyword related to Name, ID, Place etc."); //Message here
+
+
+            // Set an EditText view to get user input
+            final EditText input = new EditText(getApplicationContext());
+            input.setInputType(InputType.TYPE_CLASS_TEXT );
+            input.setTextColor(Color.BLACK);
+            alert.setView(input);
+
+            alert.setPositiveButton("SEARCH", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //You will get as string input data in this variable.
+                    // here we convert the input to a string and show in a toast.
+                    String keyword = input.getEditableText().toString();
+                    //Toast.makeText(getApplicationContext(),srt,Toast.LENGTH_LONG).show();
+                    if (!keyword.isEmpty()) {
+
+                        searchKeyword = keyword;
+
+                        getDataFromServer();
+
+
+                    } else {
+                        //Toast.makeText(getApplicationContext(), "Wrong Password !!", Toast.LENGTH_LONG).show();
+
+                        dialog.cancel();
+                    }
+
+
+                } // End of onClick(DialogInterface dialog, int whichButton)
+            }); //End of alert.setPositiveButton
+            alert.setNegativeButton("RESET", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    // Canceled.
+                    //Toast.makeText(getApplicationContext(), "Nothing!", Toast.LENGTH_LONG).show();
+                    searchKeyword = "ALL";
+
+                    getDataFromServer();
+
+                    dialog.cancel();
+                }
+            }); //End of alert.setNegativeButton
+            AlertDialog alertDialog = alert.create();
+            alertDialog.show();
+                /* Alert Dialog Code End*/
 
             return true;
         }
@@ -121,6 +180,8 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
 
     // getting the data from UserNode at Firebase and then adding the users in Arraylist and setting it to Listview
     public void getDataFromServer() {
+
+        new Logger().deleteFile("locations.txt",context);
 
         showProgressDialog();
         mDatabase.child("UserNode").child(mAuth.getCurrentUser().getUid()).child("Sub_User").addValueEventListener(new ValueEventListener() {
@@ -156,16 +217,51 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+
                 // each school details
                 UserBasicDetails schoolDetails = dataSnapshot.getValue(UserBasicDetails.class);
 
-                allEachSchoolsDetails.add(schoolDetails);
-                adapter.notifyDataSetChanged();
+                /*
+                   Enable Search Option
+                 */
 
-                if(schoolDetails!=null) {
+                if(searchKeyword.equals("ALL")) {
 
-                    allSchoolsLocations.add(schoolDetails.getGps_location());
+                    //  lat + "#" + lng + "#" + name + "#" + mapDisplayLine + "%";
+                    if (!schoolDetails.getGps_location().equals("-")) {
+
+                        String schoolLocationDetails = "MAPS@" + schoolDetails.getGps_location().split(",")[1] + "#" + schoolDetails.getGps_location().split(",")[0] + "#" + schoolDetails.getName() + "#" + schoolDetails.getPlace_name() + "," + schoolDetails.getDistt();
+
+                        new Logger().addDataIntoFile("locations.txt", schoolLocationDetails, context);
+                    }
+
+                    allEachSchoolsDetails.add(schoolDetails);
+                    adapter.notifyDataSetChanged();
                 }
+                 else {
+
+                    /*
+                      Search with filterd options
+                     */
+                    if((searchKeyword.toLowerCase().contains(schoolDetails.getId().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getName().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getPlace_name().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getPin_code().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getDistt().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getComplete_address().toLowerCase()))){
+
+                        //  lat + "#" + lng + "#" + name + "#" + mapDisplayLine + "%";
+                        if (!schoolDetails.getGps_location().equals("-")) {
+
+                            String schoolLocationDetails = "MAPS@" + schoolDetails.getGps_location().split(",")[1] + "#" + schoolDetails.getGps_location().split(",")[0] + "#" + schoolDetails.getName() + "#" + schoolDetails.getPlace_name() + "," + schoolDetails.getDistt();
+
+                            new Logger().addDataIntoFile("locations.txt", schoolLocationDetails, context);
+                        }
+
+                        allEachSchoolsDetails.add(schoolDetails);
+                        adapter.notifyDataSetChanged();
+
+                    }
+
+
+                }
+
+                adapter.notifyDataSetChanged();
 
             }
 

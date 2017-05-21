@@ -1,6 +1,8 @@
 package com.projects.thakur.apnaschool.AdminUser;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -114,18 +116,33 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
                 break;
 
             case R.id.btn_show_all_user:
-                Intent intent = new Intent(AdminHome.this, ShowAllSchoolsActivity.class);
-                startActivity(intent);
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent = new Intent(AdminHome.this, ShowAllSchoolsActivity.class);
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.btn_today_attendencs_status:
-                Intent intent_att = new Intent(AdminHome.this, AdminOverallAttendenceStatus.class);
-                startActivity(intent_att);
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent_att = new Intent(AdminHome.this, AdminOverallAttendenceStatus.class);
+                    startActivity(intent_att);
+                }
                 break;
 
             case R.id.btn_today_mdm_status:
-                Intent intent_mdm = new Intent(AdminHome.this, AdminOverallMDMStatusActivity.class);
-                startActivity(intent_mdm);
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent_mdm = new Intent(AdminHome.this, AdminOverallMDMStatusActivity.class);
+                    startActivity(intent_mdm);
+                }
                 break;
 
             case R.id.btn_create_new_task:
@@ -135,9 +152,14 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
                 break;
 
             case R.id.btn_show_all_task:
-                Intent intent_stask = new Intent(AdminHome.this, AdminShowAllTaskTypesActivity.class);
-                intent_stask.putExtra("EXTRA_SHOW_TASK_TYPE_SESSION_ID", "SHOW");
-                startActivity(intent_stask);
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent_stask = new Intent(AdminHome.this, AdminShowAllTaskTypesActivity.class);
+                    intent_stask.putExtra("EXTRA_SHOW_TASK_TYPE_SESSION_ID", "SHOW");
+                    startActivity(intent_stask);
+                }
                 break;
 
         }
@@ -160,14 +182,24 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
         //noinspection SimplifiableIfStatement
         if (id == R.id.admin_home_menu_account_details) {
 
-            Intent intent = new Intent(AdminHome.this, ShowEachSchoolDetails.class);
-            intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", "OWNER");
-            startActivity(intent);
+            if(!isConn()){
+                Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+            }
+            else {
+                Intent intent = new Intent(AdminHome.this, ShowEachSchoolDetails.class);
+                intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", "OWNER");
+                startActivity(intent);
+            }
             return true;
         }
 
         if (id == R.id.admin_home_menu_account_setting) {
-            startActivity(new Intent(AdminHome.this, SettingActivity.class));
+            if(!isConn()){
+                Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+            }
+            else {
+                startActivity(new Intent(AdminHome.this, SettingActivity.class));
+            }
         }
 
 
@@ -179,6 +211,18 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
         String json = StartUpActivity.mPrefs.getString("UserObject", "");
         userDetails = gson.fromJson(json, UserBasicDetails.class);
 
+    }
+
+    /*
+     Check internet is enabled or not.
+    */
+    public boolean isConn() {
+        ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity.getActiveNetworkInfo() != null) {
+            if (connectivity.getActiveNetworkInfo().isConnected())
+                return true;
+        }
+        return false;
     }
 
 

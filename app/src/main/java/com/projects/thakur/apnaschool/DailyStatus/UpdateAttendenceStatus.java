@@ -86,7 +86,7 @@ public class UpdateAttendenceStatus extends AppCompatActivity implements View.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.update_attendence_status_toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Submit Attendence");
+        getSupportActionBar().setTitle("Submit Attendance");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -929,7 +929,7 @@ public class UpdateAttendenceStatus extends AppCompatActivity implements View.On
 
                     //====================== ASK DIALOG BOX ========================================
                     alertDialogBuilder.setTitle("MESSAGE");
-                    alertDialogBuilder.setMessage("You have already sumitted today attendence.\n So you can't submit again !!");
+                    alertDialogBuilder.setMessage("You have already sumitted today Attendance.\n So you can't submit again !!");
                     alertDialogBuilder.setCancelable(false);
 
                     alertDialogBuilder.setPositiveButton("Close", new DialogInterface.OnClickListener() {

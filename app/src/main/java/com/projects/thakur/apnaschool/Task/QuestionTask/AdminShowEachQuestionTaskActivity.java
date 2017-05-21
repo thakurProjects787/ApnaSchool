@@ -4,10 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -115,7 +118,7 @@ public class AdminShowEachQuestionTaskActivity extends AppCompatActivity {
                 if(dataSnapshot.exists())
                 {
                     NewQuestionTaskModel taskDetails = dataSnapshot.getValue(NewQuestionTaskModel.class);
-                    String task_d = "TASK@"+taskDetails.getTask_heading()+"&"+taskDetails.getTask_last_date()+"&"+taskDetails.getTask_details();
+                    String task_d = "TASK@"+taskDetails.getTask_heading()+"&"+taskDetails.getTask_last_date()+"&"+taskDetails.getTask_details().replace("\n","%");
 
                     new Logger().addDataIntoFile("TaskData.txt",task_d,context);
                 }
@@ -143,7 +146,7 @@ public class AdminShowEachQuestionTaskActivity extends AppCompatActivity {
                     {
                         QuestionResultModel taskDetails = postSnapShot.getValue(QuestionResultModel.class);
 
-                        String eachDetails = "EACHDETAILS@"+taskDetails.getSchoolDetails()+"#"+taskDetails.getAnswer();
+                        String eachDetails = "EACHDETAILS@"+taskDetails.getSchoolDetails()+"#"+taskDetails.getAnswer().replace("\n","%");
                         new Logger().addDataIntoFile("TaskData.txt",eachDetails,context);
 
                         allQuestionTask.add(taskDetails);
@@ -306,17 +309,69 @@ public class AdminShowEachQuestionTaskActivity extends AppCompatActivity {
 
         if (id == R.id.admin_task_send_report_option) {
 
-            showProgressDialog();
+            // Ask for another email ID.
+                 /* Alert Dialog Code Start*/
+            AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.AppTheme_Dark_Dialog);
+            alert.setTitle("SEND REPORT"); //Set Alert dialog title here
+            alert.setMessage("If you want report on new email id , please provide new email id address.\n\nOtherwise it will send to your default email ID."); //Message here
 
-            String fileName = "TaskReport_"+todaySubmitDate+".xls";
 
-            if(new CreateExcelReport().generateQuestionTaskReport(fileName,this)){
-                Toast.makeText(getApplicationContext(), "Report Generated : "+fileName, Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Report Not Generated", Toast.LENGTH_LONG).show();
-            }
+            // Set an EditText view to get user input
+            final EditText input = new EditText(getApplicationContext());
+            input.setInputType(InputType.TYPE_CLASS_TEXT );
+            input.setTextColor(Color.BLACK);
+            alert.setView(input);
 
-            hideProgressDialog();
+            alert.setPositiveButton("NEW", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    //You will get as string input data in this variable.
+                    // here we convert the input to a string and show in a toast.
+                    String keyword = input.getEditableText().toString();
+                    //Toast.makeText(getApplicationContext(),srt,Toast.LENGTH_LONG).show();
+                    if (!keyword.isEmpty() && (keyword.contains("@")) && (keyword.contains(".com"))) {
+
+
+                        String fileName = "TaskReport_"+todaySubmitDate+".xls";
+
+                        if(new CreateExcelReport().generateQuestionTaskReport(fileName,context,keyword)){
+                            Toast.makeText(getApplicationContext(), "Report Generated : "+fileName, Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Report Not Generated", Toast.LENGTH_LONG).show();
+                        }
+
+
+
+                    } else {
+                        //Toast.makeText(getApplicationContext(), "Wrong Password !!", Toast.LENGTH_LONG).show();
+
+                        dialog.cancel();
+                    }
+
+
+                } // End of onClick(DialogInterface dialog, int whichButton)
+            }); //End of alert.setPositiveButton
+            alert.setNegativeButton("DEFAULT", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    // Canceled.
+                    //Toast.makeText(getApplicationContext(), "Nothing!", Toast.LENGTH_LONG).show();
+
+                    String fileName = "TaskReport_"+todaySubmitDate+".xls";
+
+                    if(new CreateExcelReport().generateQuestionTaskReport(fileName,context,"DEFAULT")){
+                        Toast.makeText(getApplicationContext(), "Report Generated : "+fileName, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Report Not Generated", Toast.LENGTH_LONG).show();
+                    }
+
+
+
+
+                    dialog.cancel();
+                }
+            }); //End of alert.setNegativeButton
+            AlertDialog alertDialog = alert.create();
+            alertDialog.show();
+                /* Alert Dialog Code End*/
 
             return true;
         }

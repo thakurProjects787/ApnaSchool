@@ -1,6 +1,8 @@
 package com.projects.thakur.apnaschool.NormalUser;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,13 +46,13 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
         btn_open_today_attendencs_window = (Button) findViewById(R.id.btn_open_today_attendencs_window);
         btn_open_today_mdm_window = (Button) findViewById(R.id.btn_open_today_mdm_window);
         btn_my_all_task = (Button) findViewById(R.id.btn_my_all_task);
-        btn_sync_all_data = (Button) findViewById(R.id.btn_sync_all_data);
+
 
         // Click listeners
         btn_open_today_attendencs_window.setOnClickListener(this);
         btn_open_today_mdm_window.setOnClickListener(this);
         btn_my_all_task.setOnClickListener(this);
-        btn_sync_all_data.setOnClickListener(this);
+
 
         //Textview
         txtv_logged_user_name = (TextView) findViewById(R.id.txtv_logged_user_name);
@@ -93,13 +95,33 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_open_today_attendencs_window:
-                Intent intent = new Intent(NormalUserActivity.this, UpdateAttendenceStatus.class);
-                startActivity(intent);
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent = new Intent(NormalUserActivity.this, UpdateAttendenceStatus.class);
+                    startActivity(intent);
+                }
                 break;
 
             case R.id.btn_open_today_mdm_window:
-                Intent intent_mdm = new Intent(NormalUserActivity.this, UpdateMDMStatus.class);
-                startActivity(intent_mdm);
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent_mdm = new Intent(NormalUserActivity.this, UpdateMDMStatus.class);
+                    startActivity(intent_mdm);
+                }
+                break;
+
+            case R.id.btn_my_all_task:
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent_mytask = new Intent(NormalUserActivity.this, UserShowMyAllTaskActivity.class);
+                    startActivity(intent_mytask);
+                }
                 break;
         }
     }
@@ -122,14 +144,24 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.admin_home_menu_account_details) {
-            Intent intent = new Intent(NormalUserActivity.this, ShowEachSchoolDetails.class);
-            intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", "OWNER");
-            startActivity(intent);
+            if(!isConn()){
+                Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+            }
+            else {
+                Intent intent = new Intent(NormalUserActivity.this, ShowEachSchoolDetails.class);
+                intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", "OWNER");
+                startActivity(intent);
+            }
             return true;
         }
 
         if (id == R.id.admin_home_menu_account_setting) {
-            startActivity(new Intent(NormalUserActivity.this, SettingActivity.class));
+            if(!isConn()){
+                Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+            }
+            else {
+                startActivity(new Intent(NormalUserActivity.this, SettingActivity.class));
+            }
         }
 
 
@@ -142,5 +174,17 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
         String json = StartUpActivity.mPrefs.getString("UserObject", "");
         userDetails = gson.fromJson(json, UserBasicDetails.class);
 
+    }
+
+    /*
+    Check internet is enabled or not.
+   */
+    public boolean isConn() {
+        ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity.getActiveNetworkInfo() != null) {
+            if (connectivity.getActiveNetworkInfo().isConnected())
+                return true;
+        }
+        return false;
     }
 }

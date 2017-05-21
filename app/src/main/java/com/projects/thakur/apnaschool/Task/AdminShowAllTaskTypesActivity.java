@@ -13,7 +13,7 @@ import com.projects.thakur.apnaschool.Task.QuestionTask.AdminShowAllQuestionTask
 
 public class AdminShowAllTaskTypesActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button btn_show_question_type_task_details,btn_show_voting_type_task_details;
+    private Button btn_show_question_type_task_details,btn_show_virtual_type_task_details;
 
     private String operationStatus;
 
@@ -40,11 +40,11 @@ public class AdminShowAllTaskTypesActivity extends AppCompatActivity implements 
 
         // configure buttons
         btn_show_question_type_task_details = (Button) findViewById(R.id.btn_show_question_type_task_details);
-        btn_show_voting_type_task_details = (Button) findViewById(R.id.btn_show_voting_type_task_details);
+        btn_show_virtual_type_task_details = (Button) findViewById(R.id.btn_show_virtual_type_task_details);
 
         // Click listeners
         btn_show_question_type_task_details.setOnClickListener(this);
-        btn_show_voting_type_task_details.setOnClickListener(this);
+        btn_show_virtual_type_task_details.setOnClickListener(this);
 
         operationStatus = getIntent().getStringExtra("EXTRA_SHOW_TASK_TYPE_SESSION_ID");
 
@@ -69,7 +69,7 @@ public class AdminShowAllTaskTypesActivity extends AppCompatActivity implements 
 
                 break;
 
-            case R.id.btn_show_voting_type_task_details:
+            case R.id.btn_show_virtual_type_task_details:
                 if(operationStatus.equals("CREATE")) {
                     //Intent intent_c = new Intent(AdminShowAllTaskTypesActivity.this, UpdateClassDetails.class);
                     //startActivity(intent_c);

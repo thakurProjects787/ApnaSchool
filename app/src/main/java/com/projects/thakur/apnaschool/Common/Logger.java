@@ -23,7 +23,7 @@ import android.util.Log;
 public class Logger {
 
     public static  FileHandler logger = null;
-    private static String folderName = "/sdcard/Files/ApnaSchool";
+    private static String folderName = "/sdcard/Files/SchoolTrac";
 
     static boolean isExternalStorageAvailable = false;
     static boolean isExternalStorageWriteable = false;
@@ -338,6 +338,49 @@ public class Logger {
         }
 
         return combinedDetails;
+    }
+
+    /*
+    Read School locations data from  file
+     */
+    public static String getDataFromlocationFile(String fileName,Context context) {
+
+        String details = "";
+
+        try {
+            File dir = new File(folderName);
+            FileInputStream fis = new FileInputStream (new File(dir,fileName));
+            //InputStream inputStream = context.openFileInput(folderPath+"/"+fileName);
+
+            if ( fis != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(fis);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                //StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    //stringBuilder.append(receiveString);
+
+                    // check for eachschooldetails
+                    if(!receiveString.isEmpty()) {
+                        if (receiveString.split("@")[0].equals("MAPS")) {
+                            details = details + receiveString.split("@")[1] + "%";
+                        }
+                    }
+
+
+                }
+
+                fis.close();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e(">> ", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e(">> ", "Can not read file: " + e.toString());
+        }
+
+        return details;
     }
 
 }

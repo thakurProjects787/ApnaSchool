@@ -189,7 +189,7 @@
                         android:layout_marginTop="5dip"
                         android:background="@color/accent"
                         android:fontFamily="monospace"
-                        android:text="ACHIVMENTS"
+                        android:text="ACHIEVEMENTS"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />

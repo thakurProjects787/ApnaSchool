@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,30 +39,34 @@ public class StartUpActivity extends AppCompatActivity {
     //activity data
     private String activityData;
 
-    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_up);
 
+        if(!isConn()){
+
+            Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+
+        }
+
+        else {
 
 
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance().getReference("UserNode");
+            //Get Firebase auth instance
+            auth = FirebaseAuth.getInstance();
+            mFirebaseDatabase = FirebaseDatabase.getInstance().getReference("UserNode");
 
-        progressBar = (ProgressBar) findViewById(R.id.startup_progressBar);
-        progressBar.setVisibility(View.VISIBLE);
+            // Get Login User Details
+            activityData = getIntent().getStringExtra("EXTRA_SESSION_ID");
 
-        // Get Login User Details
-        activityData = getIntent().getStringExtra("EXTRA_SESSION_ID");
+            mPrefs = getPreferences(MODE_PRIVATE);
 
-        mPrefs = getPreferences(MODE_PRIVATE);
+            userDetails = new UserBasicDetails();
 
-        userDetails = new UserBasicDetails();
-
-        readUserCurrentData();
+            readUserCurrentData();
+        }
 
 
     }
@@ -105,6 +110,8 @@ public class StartUpActivity extends AppCompatActivity {
 
                 //hideProgressDialog();
 
+                //Toast.makeText(getApplicationContext(), "Problem with App !!", Toast.LENGTH_LONG).show();
+
                 // Failed to read value
                 Log.e("STARTUP", "Failed to read value.", error.toException());
             }
@@ -130,7 +137,8 @@ public class StartUpActivity extends AppCompatActivity {
 
                 if(userDetails == null){
 
-                    Toast.makeText(getApplicationContext(), "Problem with App !!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Problem with App !!\n Please Install again..", Toast.LENGTH_LONG).show();
+
 
                 } else {
                     Toast.makeText(getApplicationContext(), "Done !!", Toast.LENGTH_LONG).show();
@@ -194,6 +202,18 @@ public class StartUpActivity extends AppCompatActivity {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+    }
+
+    /*
+     Check internet is enabled or not.
+    */
+    public boolean isConn() {
+        ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity.getActiveNetworkInfo() != null) {
+            if (connectivity.getActiveNetworkInfo().isConnected())
+                return true;
+        }
+        return false;
     }
 
 

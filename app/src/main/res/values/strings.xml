@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Apna School</string>
+    <string name="app_name">SchoolTrac</string>
     <string name="action_sign_in_short">Register</string>
     <string name="email">Email</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
@@ -29,6 +29,9 @@
     <string name="lbl_forgot_password">Forgot password?</string>
     <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
 
+    <string name="title_activity_display_schools_on_map">School Locations</string>
+    <string name="title_activity_display_schools_on_maps">School\'s</string>
+
     <!-- New details -->
     <string name="admin_home_menu_account_details">Details</string>
     <string name="admin_home_menu_account_setting">Setting</string>
@@ -39,7 +42,9 @@
         <item>High School</item>
         <item>Secondary School</item>
         <item>Senior Secondary School</item>
+        <item>Admin</item>
     </string-array>
+
     <string name="school_state_name">HIMACHAL PRADESH</string>
 
     <string name="title_activity_update_class_details">UpdateClassDetails</string>
@@ -69,5 +74,7 @@
         <item>PGT</item>
         <item>Lecturer</item>
     </string-array>
+
+
 
 </resources>

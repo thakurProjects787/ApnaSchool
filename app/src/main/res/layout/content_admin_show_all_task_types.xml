@@ -66,14 +66,14 @@
                         android:textStyle="bold" />
 
                     <Button
-                        android:id="@+id/btn_show_voting_type_task_details"
+                        android:id="@+id/btn_show_virtual_type_task_details"
                         style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dip"
                         android:background="@color/accent"
                         android:fontFamily="monospace"
-                        android:text="VOTING TASK"
+                        android:text="VIRTUAL TASK"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
