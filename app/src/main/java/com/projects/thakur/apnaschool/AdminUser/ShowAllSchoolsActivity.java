@@ -48,7 +48,7 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
     //List View
     ListView allDetails;
 
-    private String searchKeyword;
+    private String searchKeyword,eachschoolid;
 
     //Inner class object
     ShowSchoolAdapter adapter;
@@ -56,6 +56,8 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
     private Context context;
 
     ProgressDialog mProgressDialog;
+
+    private String adminUserID = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,8 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
+        String schoolIntentStatus = getIntent().getStringExtra("EXTRA_SHOW_ALL_SCHOOLS_SESSION_ID");
+
         allDetails=(ListView)findViewById(R.id.show_all_schools_details_lv);
 
         adapter=new ShowSchoolAdapter(ShowAllSchoolsActivity.this,allEachSchoolsDetails);
@@ -90,6 +94,13 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
         allDetails.setAdapter(adapter);
 
         searchKeyword = "ALL";
+
+        // check according to the intent request
+        if(schoolIntentStatus.equals("ADMIN")){
+            adminUserID = mAuth.getCurrentUser().getUid();
+        } else {
+            adminUserID = schoolIntentStatus;
+        }
 
         getDataFromServer();
 
@@ -184,7 +195,7 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
         new Logger().deleteFile("locations.txt",context);
 
         showProgressDialog();
-        mDatabase.child("UserNode").child(mAuth.getCurrentUser().getUid()).child("Sub_User").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("UserNode").child(adminUserID).child("Sub_User").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists())
@@ -198,6 +209,8 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
                         readSchoolDetails(allSchools.getNewuserID());
 
                     }
+
+                    mDatabase.child("UserNode").child(adminUserID).child("Sub_User").removeEventListener(this);
                 }
                 hideProgressDialog();
             }
@@ -213,7 +226,9 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
      */
     private void readSchoolDetails(String schoolDataID){
 
-        mDatabase.child("UserNode").child(schoolDataID).child("School_Basic_Info").addValueEventListener(new ValueEventListener() {
+        eachschoolid = schoolDataID;
+
+        mDatabase.child("UserNode").child(eachschoolid).child("School_Basic_Info").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -221,29 +236,13 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
                 // each school details
                 UserBasicDetails schoolDetails = dataSnapshot.getValue(UserBasicDetails.class);
 
+                if(schoolDetails != null) {
+
                 /*
                    Enable Search Option
                  */
 
-                if(searchKeyword.equals("ALL")) {
-
-                    //  lat + "#" + lng + "#" + name + "#" + mapDisplayLine + "%";
-                    if (!schoolDetails.getGps_location().equals("-")) {
-
-                        String schoolLocationDetails = "MAPS@" + schoolDetails.getGps_location().split(",")[1] + "#" + schoolDetails.getGps_location().split(",")[0] + "#" + schoolDetails.getName() + "#" + schoolDetails.getPlace_name() + "," + schoolDetails.getDistt();
-
-                        new Logger().addDataIntoFile("locations.txt", schoolLocationDetails, context);
-                    }
-
-                    allEachSchoolsDetails.add(schoolDetails);
-                    adapter.notifyDataSetChanged();
-                }
-                 else {
-
-                    /*
-                      Search with filterd options
-                     */
-                    if((searchKeyword.toLowerCase().contains(schoolDetails.getId().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getName().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getPlace_name().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getPin_code().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getDistt().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getComplete_address().toLowerCase()))){
+                    if (searchKeyword.equals("ALL")) {
 
                         //  lat + "#" + lng + "#" + name + "#" + mapDisplayLine + "%";
                         if (!schoolDetails.getGps_location().equals("-")) {
@@ -255,13 +254,33 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
 
                         allEachSchoolsDetails.add(schoolDetails);
                         adapter.notifyDataSetChanged();
+                    } else {
+
+                    /*
+                      Search with filterd options
+                     */
+                        if ((searchKeyword.toLowerCase().contains(schoolDetails.getId().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getName().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getPlace_name().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getPin_code().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getDistt().toLowerCase())) || (searchKeyword.toLowerCase().contains(schoolDetails.getComplete_address().toLowerCase()))) {
+
+                            //  lat + "#" + lng + "#" + name + "#" + mapDisplayLine + "%";
+                            if (!schoolDetails.getGps_location().equals("-")) {
+
+                                String schoolLocationDetails = "MAPS@" + schoolDetails.getGps_location().split(",")[1] + "#" + schoolDetails.getGps_location().split(",")[0] + "#" + schoolDetails.getName() + "#" + schoolDetails.getPlace_name() + "," + schoolDetails.getDistt();
+
+                                new Logger().addDataIntoFile("locations.txt", schoolLocationDetails, context);
+                            }
+
+                            allEachSchoolsDetails.add(schoolDetails);
+                            adapter.notifyDataSetChanged();
+
+                        }
+
 
                     }
 
+                    mDatabase.child("UserNode").child(eachschoolid).child("School_Basic_Info").removeEventListener(this);
 
+                    adapter.notifyDataSetChanged();
                 }
-
-                adapter.notifyDataSetChanged();
 
             }
 

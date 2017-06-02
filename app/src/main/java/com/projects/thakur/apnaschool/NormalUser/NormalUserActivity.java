@@ -1,5 +1,6 @@
 package com.projects.thakur.apnaschool.NormalUser;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -15,7 +16,13 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.projects.thakur.apnaschool.AdminUser.ShowAllSchoolsActivity;
 import com.projects.thakur.apnaschool.Auth.LoginActivity;
 import com.projects.thakur.apnaschool.Auth.StartUpActivity;
 import com.projects.thakur.apnaschool.Common.SettingActivity;
@@ -29,12 +36,16 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
 
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
-    private Button btn_open_today_attendencs_window, btn_open_today_mdm_window, btn_my_all_task, btn_sync_all_data;
+    private Button btn_open_today_attendencs_window, btn_open_today_mdm_window, btn_my_all_task, btn_show_other_schools_data;
 
     private TextView txtv_logged_user_name,txtv_logged_user_email_id,txtv_logged_user_type,txtv_logged_user_address;
 
     private UserBasicDetails userDetails;
+
+    ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +57,14 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
         btn_open_today_attendencs_window = (Button) findViewById(R.id.btn_open_today_attendencs_window);
         btn_open_today_mdm_window = (Button) findViewById(R.id.btn_open_today_mdm_window);
         btn_my_all_task = (Button) findViewById(R.id.btn_my_all_task);
+        btn_show_other_schools_data = (Button) findViewById(R.id.btn_show_other_schools_data);
 
 
         // Click listeners
         btn_open_today_attendencs_window.setOnClickListener(this);
         btn_open_today_mdm_window.setOnClickListener(this);
         btn_my_all_task.setOnClickListener(this);
+        btn_show_other_schools_data.setOnClickListener(this);
 
 
         //Textview
@@ -63,6 +76,10 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
 
         //get firebase auth instance
         auth = FirebaseAuth.getInstance();
+
+        // Firbase database access
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
 
         //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -121,6 +138,35 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
                 else {
                     Intent intent_mytask = new Intent(NormalUserActivity.this, UserShowMyAllTaskActivity.class);
                     startActivity(intent_mytask);
+                }
+                break;
+
+            case R.id.btn_show_other_schools_data:
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+
+                    mDatabase.child("UserNode").child(mAuth.getCurrentUser().getUid()).child("adminUserID").addValueEventListener(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            String adminID = dataSnapshot.getValue().toString();
+
+                            Intent intent = new Intent(NormalUserActivity.this, ShowAllSchoolsActivity.class);
+                            intent.putExtra("EXTRA_SHOW_ALL_SCHOOLS_SESSION_ID", adminID);
+                            startActivity(intent);
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+
+                    });
+
                 }
                 break;
         }
@@ -187,4 +233,22 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
         }
         return false;
     }
+
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(NormalUserActivity.this);
+            mProgressDialog.setMessage("Loading...");
+            mProgressDialog.setIndeterminate(true);
+        }
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
+    }
+
+
 }

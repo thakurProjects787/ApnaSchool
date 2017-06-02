@@ -1,15 +1,20 @@
 package com.projects.thakur.apnaschool.AdminUser;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +42,7 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
     private String userdetails;
 
 
-    private Button btn_addnewUser, btn_show_all_users, btn_today_attendencs_status,btn_today_mdm_status,btn_createTask,btn_show_all_task;
+    private Button btn_addnewUser, btn_show_all_users, btn_today_attendencs_status,btn_today_mdm_status,btn_createTask,btn_show_all_task,btn_delete_any_user;
 
     private TextView txtv_logged_admin_name,txtv_logged_admin_email_id,txtv_admin_user_type,txtv_admin_user_address;
 
@@ -55,6 +60,7 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
         btn_today_mdm_status = (Button) findViewById(R.id.btn_today_mdm_status);
         btn_createTask = (Button) findViewById(R.id.btn_create_new_task);
         btn_show_all_task = (Button) findViewById(R.id.btn_show_all_task);
+        btn_delete_any_user = (Button) findViewById(R.id.btn_delete_any_user);
 
         // Click listeners
         btn_addnewUser.setOnClickListener(this);
@@ -63,6 +69,7 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
         btn_today_mdm_status.setOnClickListener(this);
         btn_createTask.setOnClickListener(this);
         btn_show_all_task.setOnClickListener(this);
+        btn_delete_any_user.setOnClickListener(this);
 
         //Textview
         txtv_logged_admin_name = (TextView) findViewById(R.id.txtv_logged_admin_name);
@@ -121,9 +128,71 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
                 }
                 else {
                     Intent intent = new Intent(AdminHome.this, ShowAllSchoolsActivity.class);
+                    intent.putExtra("EXTRA_SHOW_ALL_SCHOOLS_SESSION_ID", "ADMIN");
                     startActivity(intent);
                 }
                 break;
+
+            case R.id.btn_delete_any_user:
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    // Ask for another email ID.
+                 /* Alert Dialog Code Start*/
+                    AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.AppTheme_Dark_Dialog);
+                    alert.setTitle("DELETE SCHOOL"); //Set Alert dialog title here
+                    alert.setMessage("Are you sure you want to delete complete schools details from Database?\n\nNote : After this operation you can't recover this school details.\nPlease provide schoold email ID."); //Message here
+
+
+                    // Set an EditText view to get user input
+                    final EditText input = new EditText(getApplicationContext());
+                    input.setInputType(InputType.TYPE_CLASS_TEXT );
+                    input.setTextColor(Color.BLACK);
+                    alert.setView(input);
+
+                    alert.setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            //You will get as string input data in this variable.
+                            // here we convert the input to a string and show in a toast.
+                            String keyword = input.getEditableText().toString();
+                            //Toast.makeText(getApplicationContext(),srt,Toast.LENGTH_LONG).show();
+                            if (!keyword.isEmpty() && (keyword.contains("@")) && (keyword.contains(".com"))) {
+
+
+                                new DeleteUserOperation(keyword,getApplicationContext()).deleteSchoolDetails();
+                                Toast.makeText(getApplicationContext(), "Done ", Toast.LENGTH_LONG).show();
+
+
+
+                            } else {
+                                //Toast.makeText(getApplicationContext(), "Wrong Password !!", Toast.LENGTH_LONG).show();
+
+                                dialog.cancel();
+                            }
+
+
+                        } // End of onClick(DialogInterface dialog, int whichButton)
+                    }); //End of alert.setPositiveButton
+                    alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            // Canceled.
+                            //Toast.makeText(getApplicationContext(), "Nothing!", Toast.LENGTH_LONG).show();
+
+                            Toast.makeText(getApplicationContext(), "Cancel ", Toast.LENGTH_LONG).show();
+
+
+
+
+                            dialog.cancel();
+                        }
+                    }); //End of alert.setNegativeButton
+                    AlertDialog alertDialog = alert.create();
+                    alertDialog.show();
+                /* Alert Dialog Code End*/
+                }
+                break;
+
 
             case R.id.btn_today_attendencs_status:
                 if(!isConn()){
