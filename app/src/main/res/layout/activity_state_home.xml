@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".Common.MainActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
+        android:background="@color/bg_login">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <ImageView
+                android:layout_width="321dp"
+                android:layout_height="@dimen/logo_w_h"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="0.06"
+                android:src="@drawable/schooltrac_app_name_with_hp" />
+
+            <!-- User Information -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_view2"
+                android:layout_gravity="center"
+                android:layout_margin="9dp"
+                android:elevation="10dp"
+                card_view:cardBackgroundColor="@color/accent"
+                card_view:cardCornerRadius="9dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/txtv_state_logged_admin_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif"
+                        android:text="Name"
+                        android:textAlignment="viewStart"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold" />
+
+                    <TableRow
+                        android:id="@+id/hr"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="#444"></TableRow>
+
+                    <TextView
+                        android:id="@+id/txtv_state_admin_user_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif"
+                        android:text="type"
+                        android:textAlignment="viewEnd"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/holo_orange_dark"
+                        android:textSize="14sp"
+                        android:textStyle="normal|bold" />
+
+                    <TextView
+                        android:id="@+id/txtv_state_logged_admin_email_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif"
+                        android:text="email_id"
+                        android:textAlignment="viewEnd"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/holo_orange_dark"
+                        android:textSize="14sp"
+                        android:textStyle="normal|bold" />
+
+                    <TextView
+                        android:id="@+id/txtv_state_admin_user_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif"
+                        android:text="type"
+                        android:textAlignment="viewEnd"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/holo_orange_dark"
+                        android:textSize="14sp"
+                        android:textStyle="normal|bold" />
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <!-- Users details -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_view2"
+                android:layout_gravity="center"
+                android:layout_margin="9dp"
+                android:elevation="10dp"
+                card_view:cardBackgroundColor="@color/accent"
+                card_view:cardCornerRadius="9dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+
+                    <TextView
+                        android:id="@+id/txtv_state_information_header1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif"
+                        android:text="Manage District's"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold" />
+
+                    <TableRow
+                        android:id="@+id/hr1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="#444"></TableRow>
+
+
+                    <Button
+                        android:id="@+id/btn_state_add_new_User"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/primary_dark"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:fontFamily="monospace"
+                        android:text="ADD NEW DISTRICT"
+                        android:textAlignment="center"
+                        android:textColor="@color/accent"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+
+                    <Button
+                        android:id="@+id/btn_state_show_all_user"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/primary_dark"
+                        android:fontFamily="monospace"
+                        android:text="SHOW ALL DISTRICT"
+                        android:textAlignment="center"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btn_state_delete_any_user"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/primary_dark"
+                        android:fontFamily="monospace"
+                        android:text="DELETE DISTRICT"
+                        android:textAlignment="center"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!-- Global details -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view_8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_view2"
+                android:layout_gravity="center"
+                android:layout_margin="9dp"
+                android:elevation="10dp"
+                card_view:cardBackgroundColor="@color/accent"
+                card_view:cardCornerRadius="9dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/txtv_information_header_state_global"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif"
+                        android:text="State Level Detail's"
+                        android:textAlignment="viewStart"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold" />
+
+                    <TableRow
+                        android:id="@+id/hr2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="#444"></TableRow>
+
+
+                    <Button
+                        android:id="@+id/btn_show_all_schools_details_state_global"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/primary_dark"
+                        android:fontFamily="monospace"
+                        android:text="SHOW SCHOOL's"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btn_show_all_teachers_details_state_global"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/primary_dark"
+                        android:fontFamily="monospace"
+                        android:text="SHOW TEACHER's"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btn_show_all_openpoints_details_state_global"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/primary_dark"
+                        android:fontFamily="monospace"
+                        android:text="SHOW OPEN POINT's"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!-- Daily Updates -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_view2"
+                android:layout_gravity="center"
+                android:layout_margin="9dp"
+                android:elevation="10dp"
+                card_view:cardBackgroundColor="@color/accent"
+                card_view:cardCornerRadius="9dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/txtv_state_information_header2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif"
+                        android:text="Daily Updates"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold" />
+
+                    <TableRow
+                        android:id="@+id/hr3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="#444"></TableRow>
+
+                    <Button
+                        android:id="@+id/btn_state_today_attendencs_status"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/primary_dark"
+                        android:fontFamily="monospace"
+                        android:text="ATTENDANCE"
+                        android:textAlignment="center"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btn_state_today_mdm_status"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/primary_dark"
+                        android:fontFamily="monospace"
+                        android:text="MDM STATUS"
+                        android:textAlignment="center"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!-- Task section -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_view2"
+                android:layout_gravity="center"
+                android:layout_margin="9dp"
+                android:elevation="10dp"
+                card_view:cardBackgroundColor="@color/accent"
+                card_view:cardCornerRadius="9dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/txtv_state_information_header3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif"
+                        android:text="Task"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold" />
+
+                    <TableRow
+                        android:id="@+id/hr4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="#444"></TableRow>
+
+                    <Button
+                        android:id="@+id/btn_state_create_new_task"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/primary_dark"
+                        android:fontFamily="monospace"
+                        android:text="CREATE NEW TASK"
+                        android:textAlignment="center"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+
+                    <Button
+                        android:id="@+id/btn_state_show_all_task"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/primary_dark"
+                        android:fontFamily="monospace"
+                        android:text="SHOW ALL TASK"
+                        android:textAlignment="center"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <!-- Notice Board -->
+            <android.support.v7.widget.CardView
+                android:id="@+id/notice_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="9dp"
+                android:elevation="10dp"
+                card_view:cardBackgroundColor="@color/accent"
+                card_view:cardCornerRadius="9dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+                    <TextView
+                        android:id="@+id/txtv_notice_board_header3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:fontFamily="sans-serif"
+                        android:text="Notice Board"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold" />
+
+                    <TableRow
+                        android:id="@+id/hr5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="#444"></TableRow>
+
+                    <Button
+                        android:id="@+id/btn_add_new_notice_global"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/primary_dark"
+                        android:fontFamily="monospace"
+                        android:text="ADD NEW NOTICE"
+                        android:textAlignment="center"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+
+                    <Button
+                        android:id="@+id/btn_show_all_notices_global"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/primary_dark"
+                        android:fontFamily="monospace"
+                        android:text="SHOW ALL NOTICE"
+                        android:textAlignment="center"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+</android.support.design.widget.CoordinatorLayout>

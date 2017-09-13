@@ -59,11 +59,12 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dip"
-                        android:background="@color/accent"
+                        android:background="@color/btn_login"
                         android:fontFamily="monospace"
                         android:text="SCHOOL"
                         android:textAllCaps="false"
-                        android:textColor="@color/black"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -73,10 +74,11 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dip"
-                        android:background="@color/accent"
+                        android:background="@color/btn_login"
                         android:fontFamily="monospace"
                         android:text="CLASSES"
-                        android:textColor="@color/black"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -86,10 +88,25 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dip"
-                        android:background="@color/accent"
+                        android:background="@color/btn_login"
                         android:fontFamily="monospace"
                         android:text="TEACHER'S"
-                        android:textColor="@color/black"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btn_show_gallery_details"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/btn_login"
+                        android:fontFamily="monospace"
+                        android:text="GALLERY"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -136,10 +153,11 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dip"
-                        android:background="@color/accent"
+                        android:background="@color/btn_login"
                         android:fontFamily="monospace"
                         android:text="STUDENTS / STOCK"
-                        android:textColor="@color/black"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -187,10 +205,25 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dip"
-                        android:background="@color/accent"
+                        android:background="@color/btn_login"
                         android:fontFamily="monospace"
                         android:text="ACHIEVEMENTS"
-                        android:textColor="@color/black"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btn_show_openpoints_details"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dip"
+                        android:background="@color/btn_login"
+                        android:fontFamily="monospace"
+                        android:text="OPEN POINT'S"
+                        android:textColor="@color/accent"
+                        android:drawableRight="@drawable/ic_right_arrow"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 

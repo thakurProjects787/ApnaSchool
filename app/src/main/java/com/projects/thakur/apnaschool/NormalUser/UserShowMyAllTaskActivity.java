@@ -7,11 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.projects.thakur.apnaschool.Model.ShowUserAllTask;
 import com.projects.thakur.apnaschool.R;
 import com.projects.thakur.apnaschool.Task.QuestionTask.NewQuestionTaskModel;
+import com.projects.thakur.apnaschool.Task.VirtualTask.NewVirtualTaskModel;
 
 import java.util.ArrayList;
 
@@ -40,6 +44,7 @@ public class UserShowMyAllTaskActivity extends AppCompatActivity {
 
     //Inner class object
     ShowMyTaskAdapter adapter;
+    private String showTaskType = "QUESTION";
 
     ProgressDialog mProgressDialog;
 
@@ -81,51 +86,135 @@ public class UserShowMyAllTaskActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.switch_btw_diff_task, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.switch_to_question_task) {
+
+            showTaskType = "QUESTION";
+            getAllQuestionTask();
+
+            return true;
+        }
+
+        if (id == R.id.switch_to_virtual_task) {
+
+            showTaskType = "VIRTUAL";
+            getAllVirtualTask();
+
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
     // getting the data from UserNode at Firebase and then adding the users in Arraylist and setting it to Listview
     public void getAllQuestionTask() {
 
         showProgressDialog();
 
-      mDatabase.child("UserNode").child(mAuth.getCurrentUser().getUid()).child("adminUserID").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("UserNode").child(mAuth.getCurrentUser().getUid()).child("adminUserID").addValueEventListener(new ValueEventListener() {
 
-          @Override
-          public void onDataChange(DataSnapshot dataSnapshot) {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-              mDatabase.child("UserNode").child(dataSnapshot.getValue().toString()).child("TASK").child("OPEN").child("QUESTION").addValueEventListener(new ValueEventListener() {
-                  @Override
-                  public void onDataChange(DataSnapshot dataSnapshot) {
-                      if (dataSnapshot.exists()) {
-                          allMyTask.clear();
+                mDatabase.child("UserNode").child(dataSnapshot.getValue().toString()).child("TASK").child("OPEN").child("QUESTION").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            allMyTask.clear();
 
-                          for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
-                              NewQuestionTaskModel taskDetails = postSnapShot.getValue(NewQuestionTaskModel.class);
+                            for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
+                                NewQuestionTaskModel taskDetails = postSnapShot.getValue(NewQuestionTaskModel.class);
 
-                              ShowUserAllTask taskInfo = new ShowUserAllTask();
-                              taskInfo.setTaskID(taskDetails.getTask_firbase_ID());
-                              taskInfo.setTaskHeading(taskDetails.getTask_heading());
-                              taskInfo.setTaskLastDate(taskDetails.getTask_last_date());
-                              taskInfo.setTaskType("QUESTION");
+                                ShowUserAllTask taskInfo = new ShowUserAllTask();
+                                taskInfo.setTaskID(taskDetails.getTask_firbase_ID());
+                                taskInfo.setTaskHeading(taskDetails.getTask_heading());
+                                taskInfo.setTaskLastDate(taskDetails.getTask_last_date());
+                                taskInfo.setTaskType("QUESTION");
 
-                              allMyTask.add(taskInfo);
-                              adapter.notifyDataSetChanged();
-                          }
-                      }
-                      hideProgressDialog();
-                  }
+                                allMyTask.add(taskInfo);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                        hideProgressDialog();
+                    }
 
-                  @Override
-                  public void onCancelled(DatabaseError databaseError) {
-                      hideProgressDialog();
-                  }
-              });
-          }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        hideProgressDialog();
+                    }
+                });
+            }
 
-          @Override
-          public void onCancelled(DatabaseError databaseError) {
-              hideProgressDialog();
-          }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                hideProgressDialog();
+            }
 
-      });
+        });
+
+
+    }
+
+    public void getAllVirtualTask() {
+
+        showProgressDialog();
+
+        mDatabase.child("UserNode").child(mAuth.getCurrentUser().getUid()).child("adminUserID").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mDatabase.child("UserNode").child(dataSnapshot.getValue().toString()).child("TASK").child("OPEN").child("VIRTUAL").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            allMyTask.clear();
+
+                            for (DataSnapshot postSnapShot : dataSnapshot.getChildren()) {
+                                NewVirtualTaskModel taskDetails = postSnapShot.getValue(NewVirtualTaskModel.class);
+
+                                ShowUserAllTask taskInfo = new ShowUserAllTask();
+                                taskInfo.setTaskID(taskDetails.getTask_firbase_ID());
+                                taskInfo.setTaskHeading(taskDetails.getTask_heading());
+                                taskInfo.setTaskLastDate(taskDetails.getTask_last_date());
+                                taskInfo.setTaskType("VIRTUAL");
+
+                                allMyTask.add(taskInfo);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                        hideProgressDialog();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        hideProgressDialog();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                hideProgressDialog();
+            }
+
+        });
 
 
     }
@@ -204,10 +293,17 @@ public class UserShowMyAllTaskActivity extends AppCompatActivity {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(c,s.getClass_name(),Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(UserShowMyAllTaskActivity.this, SubmitQuestionTaskActivity.class);
-                    intent.putExtra("EXTRA_EACH_QUESTION_TASK_ANS_SESSION_ID", obj.getTaskID());
-                    startActivity(intent);
+
+                    if(showTaskType.equals("QUESTION")) {
+                        //Toast.makeText(c,s.getClass_name(),Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(UserShowMyAllTaskActivity.this, SubmitQuestionTaskActivity.class);
+                        intent.putExtra("EXTRA_EACH_QUESTION_TASK_ANS_SESSION_ID", obj.getTaskID());
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(UserShowMyAllTaskActivity.this, SubmitVirtualTaskActivity.class);
+                        intent.putExtra("EXTRA_EACH_VIRTUAL_TASK_ANS_SESSION_ID", obj.getTaskID());
+                        startActivity(intent);
+                    }
                 }
             });
 

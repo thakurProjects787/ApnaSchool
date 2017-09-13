@@ -24,6 +24,7 @@ import com.projects.thakur.apnaschool.Common.CreateExcelReport;
 import com.projects.thakur.apnaschool.Model.UserBasicDetails;
 import com.projects.thakur.apnaschool.NormalUser.NormalUserActivity;
 import com.projects.thakur.apnaschool.R;
+import com.projects.thakur.apnaschool.StateUsers.StateHome;
 
 public class StartUpActivity extends AppCompatActivity {
 
@@ -90,7 +91,12 @@ public class StartUpActivity extends AppCompatActivity {
 
                 hideProgressDialog();
 
-                if(user_Type.equals("Admin")){
+                if(user_Type.equals("State")) {
+                    Intent intent = new Intent(StartUpActivity.this, StateHome.class);
+                    intent.putExtra("EXTRA_SESSION_ID", activityData);
+                    startActivity(intent);
+                    finish();
+                }else if(user_Type.equals("Admin")){
                     Intent intent = new Intent(StartUpActivity.this, AdminHome.class);
                     intent.putExtra("EXTRA_SESSION_ID", activityData);
                     startActivity(intent);

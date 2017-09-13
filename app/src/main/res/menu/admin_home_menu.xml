@@ -11,6 +11,25 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/admin_home_menu_show_all_notification"
+        android:title="Show All Notification"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_show_notif"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/admin_home_menu_send_notification"
+        android:title="Send Notification"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/admin_home_menu_open_file_manager"
+        android:title="Open File Manager"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/admin_home_menu_account_setting"
         android:title="@string/admin_home_menu_account_setting"
         android:orderInCategory="100"

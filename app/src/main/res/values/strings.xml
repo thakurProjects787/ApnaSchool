@@ -43,6 +43,7 @@
         <item>Secondary School</item>
         <item>Senior Secondary School</item>
         <item>Admin</item>
+        <item>State</item>
     </string-array>
 
     <string name="school_state_name">HIMACHAL PRADESH</string>
@@ -74,7 +75,6 @@
         <item>PGT</item>
         <item>Lecturer</item>
     </string-array>
-
 
 
 </resources>

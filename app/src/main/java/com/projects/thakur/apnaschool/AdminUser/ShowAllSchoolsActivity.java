@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.projects.thakur.apnaschool.Auth.StartUpActivity;
 import com.projects.thakur.apnaschool.Common.Logger;
 import com.projects.thakur.apnaschool.Common.Maps.DisplaySchoolsOnMaps;
 import com.projects.thakur.apnaschool.Model.UserBasicDetails;
@@ -57,7 +58,7 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
 
     ProgressDialog mProgressDialog;
 
-    private String adminUserID = "";
+    private String adminUserID = "",schoolIntentStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +86,7 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
 
-        String schoolIntentStatus = getIntent().getStringExtra("EXTRA_SHOW_ALL_SCHOOLS_SESSION_ID");
+        schoolIntentStatus = getIntent().getStringExtra("EXTRA_SHOW_ALL_SCHOOLS_SESSION_ID");
 
         allDetails=(ListView)findViewById(R.id.show_all_schools_details_lv);
 
@@ -96,9 +97,13 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
         searchKeyword = "ALL";
 
         // check according to the intent request
-        if(schoolIntentStatus.equals("ADMIN")){
+        if(schoolIntentStatus.equals("STATE")){
             adminUserID = mAuth.getCurrentUser().getUid();
-        } else {
+
+        }else if(schoolIntentStatus.equals("ADMIN")){
+            adminUserID = mAuth.getCurrentUser().getUid();
+        }
+        else {
             adminUserID = schoolIntentStatus;
         }
 
@@ -131,7 +136,7 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.filter_schools_details_from_all) {
+        if (id == R.id.filter_allschools_details_from_all) {
 
             /* Alert Dialog Code Start*/
             AlertDialog.Builder alert = new AlertDialog.Builder(this, R.style.AppTheme_Dark_Dialog);
@@ -181,6 +186,27 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
             AlertDialog alertDialog = alert.create();
             alertDialog.show();
                 /* Alert Dialog Code End*/
+
+            return true;
+        }
+
+
+        if (id == R.id.filter_allschools_details_refresh_all) {
+            Toast.makeText(getApplicationContext(), "Refreshing !!", Toast.LENGTH_SHORT).show();
+
+            searchKeyword = "ALL";
+            getDataFromServer();
+            return true;
+        }
+
+        if (id == R.id.filter_allschools_details_generate_report) {
+
+            return true;
+        }
+
+        if (id == R.id.filter_allschools_details_show_counts) {
+
+            Toast.makeText(getApplicationContext(),"Total School's : "+Integer.toString(allEachSchoolsDetails.size()) , Toast.LENGTH_LONG).show();
 
             return true;
         }
@@ -379,10 +405,22 @@ public class ShowAllSchoolsActivity extends AppCompatActivity {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(c,s.getClass_name(),Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ShowAllSchoolsActivity.this, ShowEachSchoolDetails.class);
-                    intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", obj.getSchool_firbaseDataID());
-                    startActivity(intent);
+
+                    //Toast.makeText(getApplicationContext(),"Total School's : "+Integer.toString(allEachSchoolsDetails.size()) , Toast.LENGTH_SHORT).show();
+
+                    // Check for State user
+                    if(schoolIntentStatus.equals("STATE")){
+
+                        Intent intent = new Intent(ShowAllSchoolsActivity.this, ShowDisttAdminUserDetails.class);
+                        intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", obj.getSchool_firbaseDataID());
+                        startActivity(intent);
+
+                    } else {
+
+                        Intent intent = new Intent(ShowAllSchoolsActivity.this, ShowEachSchoolDetails.class);
+                        intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", obj.getSchool_firbaseDataID());
+                        startActivity(intent);
+                    }
                 }
             });
 

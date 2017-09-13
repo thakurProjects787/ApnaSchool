@@ -2,6 +2,7 @@ package com.projects.thakur.apnaschool.DailyStatus;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.projects.thakur.apnaschool.Auth.StartUpActivity;
+import com.projects.thakur.apnaschool.Model.AchivmentsDetails;
 import com.projects.thakur.apnaschool.Model.ClassDetails;
 import com.projects.thakur.apnaschool.Model.DailyStudentAttendance;
 import com.projects.thakur.apnaschool.Model.UserBasicDetails;
@@ -74,6 +76,11 @@ public class UpdateAttendenceStatus extends AppCompatActivity implements View.On
     private String all_classes_details;
     private String todaySubmitDate;
     private int total_students,total_presents,total_absent;
+
+    // ====================================
+    // Notification details
+    private String header;
+    private String details;
 
     //dialog box
     AlertDialog.Builder alertDialogBuilder;
@@ -847,6 +854,10 @@ public class UpdateAttendenceStatus extends AppCompatActivity implements View.On
 
                     String calculatedDetails = Integer.toString(total_students)+"#"+Integer.toString(total_presents)+"#"+Integer.toString(total_absent);
 
+                    details = "Students - T : "+Integer.toString(total_students)+" P : "+Integer.toString(total_presents)+" A : "+Integer.toString(total_absent);
+                    details = details + "\n"+"Teachers - T : "+teachers_details.split("#")[0]+" P : "+teachers_details.split("#")[1]+" A : "+teachers_details.split("#")[2];
+
+
                     DailyStudentAttendance todayAttendence = new DailyStudentAttendance();
                     todayAttendence.setCalculated_attnd(calculatedDetails);
                     todayAttendence.setAll_classes_attnd(all_classes_details);
@@ -876,6 +887,11 @@ public class UpdateAttendenceStatus extends AppCompatActivity implements View.On
                                 {
                                     Toast.makeText(UpdateAttendenceStatus.this, "Your today attendence has been suubmitted !!",
                                             Toast.LENGTH_SHORT).show();
+
+                                    // ============ Send notification to Admin =============================
+                                    header = "Attendence Submitted !!";
+                                    sendNotificationToAdmin();
+                                    // =====================================================================
                                     finish();
                                 }
                             }
@@ -1004,6 +1020,69 @@ public class UpdateAttendenceStatus extends AppCompatActivity implements View.On
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+    }
+
+    /*
+       Send Notification to admin
+     */
+    private void sendNotificationToAdmin(){
+
+
+        mDatabase.child("UserNode").child(mAuth.getCurrentUser().getUid()).child("adminUserID").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String adminID = dataSnapshot.getValue().toString();
+
+                // =============== Update Admin Notification section ===================
+
+                //create  Details model
+                AchivmentsDetails addNewNotif = new AchivmentsDetails();
+
+                // Get current date
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+
+                String senderDetails = StartUpActivity.userDetails.getName()+"  "+mdformat.format(calendar.getTime());
+
+                addNewNotif.setAchv_titles(header);
+                addNewNotif.setAchv_date(senderDetails);
+                addNewNotif.setAchv_details(details);
+
+                // Get new push key
+                String notif_key = mDatabase.child("UserNode").child(adminID).child("Notification").push().getKey();
+
+                String firbaseIds = notif_key+"&&"+StartUpActivity.userDetails.getSchool_firbaseDataID();
+
+                addNewNotif.setAchv_firbase_ID(firbaseIds);
+
+                // save the user at UserNode under user UID
+                mDatabase.child("UserNode").child(adminID).child("Notification").child(notif_key).setValue(addNewNotif, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                        //if(databaseError==null)
+                        //{
+                        //Toast.makeText(SendNotificationActivity.this, "Each Notification send!!",Toast.LENGTH_SHORT).show();
+                        //}
+                    }
+                });
+
+                // =====================================================================
+
+                mDatabase.child("UserNode").child(mAuth.getCurrentUser().getUid()).child("adminUserID").removeEventListener(this);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+
+
+        });
     }
 
 

@@ -383,4 +383,45 @@ public class Logger {
         return details;
     }
 
+    /*
+    Read keys file
+     */
+    public static String getDataFromkeyFile(String fileName,Context context) {
+
+        String key = "";
+
+        try {
+            File dir = new File(folderName);
+            FileInputStream fis = new FileInputStream (new File(dir,fileName));
+            //InputStream inputStream = context.openFileInput(folderPath+"/"+fileName);
+
+            if ( fis != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(fis);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                //StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    //stringBuilder.append(receiveString);
+
+                    // check for eachschooldetails
+                    if(!receiveString.isEmpty()) {
+                        key = receiveString;
+                    }
+
+
+                }
+
+                fis.close();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e(">> ", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e(">> ", "Can not read file: " + e.toString());
+        }
+
+        return key;
+    }
+
 }

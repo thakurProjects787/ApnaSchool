@@ -38,7 +38,7 @@ public class AdminOverallMDMStatusActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private DatabaseReference mFirebaseDatabase;
 
-    private String todaySubmitDate,eachSchoolID;
+    private String todaySubmitDate,eachSchoolID,school_firebase_ID;
 
     //logger
     private Logger logger;
@@ -48,6 +48,7 @@ public class AdminOverallMDMStatusActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
 
     // Declare all textview bind variables
+    private TextView txtv_admin_daily_mdm_infor_date_value;
     private TextView txtv_admin_daily_attn_tot_schools_value,txtv_admin_daily_attn_tot_schools_present_value,txtv_admin_daily_attn_tot_schools_pending_value,txtv_admin_daily_mdm_tot_student_value,txtv_admin_daily_attn_mdm_student_present_value;
     private TextView txtv_admin_daily_attn_mdm_student_absent_value,txtv_admin_daily_tot_mdm_rice_used_value,txtv_admin_daily_tot_mdm_rice_stock_value;
 
@@ -76,7 +77,11 @@ public class AdminOverallMDMStatusActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance().getReference();
 
+        // get parent activity status
+        String parentAtivityMsg = getIntent().getStringExtra("EXTRA_ADMIN_STATE_MDM_SESSION_ID");
+
         //bind all texview variables
+        txtv_admin_daily_mdm_infor_date_value = (TextView) findViewById(R.id.txtv_admin_daily_mdm_infor_date_value);
         txtv_admin_daily_attn_tot_schools_value = (TextView) findViewById(R.id.txtv_admin_daily_attn_tot_schools_value);
         txtv_admin_daily_attn_tot_schools_present_value = (TextView) findViewById(R.id.txtv_admin_daily_attn_tot_schools_present_value);
         txtv_admin_daily_attn_tot_schools_pending_value = (TextView) findViewById(R.id.txtv_admin_daily_attn_tot_schools_pending_value);
@@ -94,10 +99,28 @@ public class AdminOverallMDMStatusActivity extends AppCompatActivity {
 
         todaySubmitDate = mdformat.format(calendar.getTime());
 
+
+        SimpleDateFormat mdformat_2 = new SimpleDateFormat("dd/MM/yyyy");
+        txtv_admin_daily_mdm_infor_date_value.setText(mdformat_2.format(calendar.getTime()));
+
+
          /*
-          Read all schools MDM details
+           For DISTT - Read District school's and calculate all.
+           For STATE - Read State districts and then read each district school's details and then calculate.
          */
-        getAdminAllSchoolsDetails();
+
+        if(parentAtivityMsg.equals("DISTT")) {
+        /*
+          Read all District schools MDM details
+         */
+            getAdminAllSchoolsDetails();
+        } else {
+            /*
+                Read first all State district and then read each school's details
+             */
+
+            getStateLevelData();
+        }
 
     }
 
@@ -427,6 +450,83 @@ public class AdminOverallMDMStatusActivity extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /*
+       Read state district details
+     */
+
+    public void getStateLevelData() {
+
+        new Logger().deleteFile("locations.txt",context);
+
+        showProgressDialog();
+        mFirebaseDatabase.child("UserNode").child(auth.getCurrentUser().getUid()).child("Sub_User").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+
+                    for(DataSnapshot postSnapShot:dataSnapshot.getChildren())
+                    {
+                        NewUserDetails allSchools=postSnapShot.getValue(NewUserDetails.class);
+                        // Read school details
+                        getEachDisttSchoolDetails(allSchools.getNewuserID());
+
+                    }
+
+                    mFirebaseDatabase.child("UserNode").child(auth.getCurrentUser().getUid()).child("Sub_User").removeEventListener(this);
+                }
+                hideProgressDialog();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                hideProgressDialog();
+            }
+        });
+    }
+
+    /*
+        Read each school details
+     */
+    public void getEachDisttSchoolDetails(String firebase_ID) {
+
+        school_firebase_ID = firebase_ID;
+
+        //delete old dataCal file
+        logger.deleteFile("dataCal.txt",getApplicationContext());
+
+        resetView();
+
+        showProgressDialog();
+        mFirebaseDatabase.child("UserNode").child(firebase_ID).child("Sub_User").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+
+                    long totalSchool = dataSnapshot.getChildrenCount();
+
+                    txtv_admin_daily_attn_tot_schools_value.setText(Long.toString(totalSchool));
+
+                    for(DataSnapshot postSnapShot:dataSnapshot.getChildren())
+                    {
+                        NewUserDetails allSchools=postSnapShot.getValue(NewUserDetails.class);
+                        // Read school details
+                        readSchoolDailyMDMDetails(allSchools.getNewuserID());
+
+                    }
+                }
+                hideProgressDialog();
+
+                mFirebaseDatabase.child("UserNode").child(school_firebase_ID).child("Sub_User").removeEventListener(this);
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                hideProgressDialog();
+            }
+        });
+
     }
 
 

@@ -1,5 +1,7 @@
 package com.projects.thakur.apnaschool.Task.QuestionTask;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +14,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,11 +26,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.projects.thakur.apnaschool.AdminUser.AdminHome;
 import com.projects.thakur.apnaschool.AdminUser.NewUserDetails;
+import com.projects.thakur.apnaschool.Auth.StartUpActivity;
 import com.projects.thakur.apnaschool.Common.Logger;
+import com.projects.thakur.apnaschool.Model.AchivmentsDetails;
 import com.projects.thakur.apnaschool.Model.UserBasicDetails;
 import com.projects.thakur.apnaschool.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 
 public class AdminCreateQuestionTaskActivity extends AppCompatActivity implements View.OnClickListener{
@@ -38,11 +45,16 @@ public class AdminCreateQuestionTaskActivity extends AppCompatActivity implement
 
     private ProgressDialog mProgressDialog;
 
-    private Button btn_add_new_question_task,btn_delete_current_question_task;
+    private Button btn_add_new_question_task,btn_delete_current_question_task,btn_question_task_set_date;
 
     private EditText edtxt_question_task_heading,edtxt_question_task_Submittion_date,edtxt_question_task_details;
 
     private String question_task_heading,question_task_Submittion_date,question_task_details;
+
+    // ===== Date Section ============
+    private DatePicker datePicker;
+    private Calendar calendar;
+    private int year, month, day;
 
     //Get value from parent activity
     private String operationStatus;
@@ -87,6 +99,9 @@ public class AdminCreateQuestionTaskActivity extends AppCompatActivity implement
 
         btn_delete_current_question_task = (Button) findViewById(R.id.btn_delete_current_question_task);
         btn_delete_current_question_task.setOnClickListener(this);
+
+        btn_question_task_set_date = (Button) findViewById(R.id.btn_question_task_set_date);
+        btn_question_task_set_date.setOnClickListener(this);
 
         // change view according to operationStatus
         if(operationStatus.equals("ADD_NEW")){
@@ -158,6 +173,11 @@ public class AdminCreateQuestionTaskActivity extends AppCompatActivity implement
 
                 break;
 
+            case R.id.btn_question_task_set_date:
+                setDate();
+                break;
+
+
         }
     }
 
@@ -205,6 +225,22 @@ public class AdminCreateQuestionTaskActivity extends AppCompatActivity implement
             addNewQuestionTask.setTask_last_date(question_task_Submittion_date);
             addNewQuestionTask.setTask_details(question_task_details);
             addNewQuestionTask.setTask_stage("OPEN");
+
+            //***************** Notification Status **********************
+            //create  Details model
+            AchivmentsDetails addNewNotif = new AchivmentsDetails();
+
+            // Get current date
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+
+            String senderDetails = StartUpActivity.userDetails.getName()+"  "+mdformat.format(calendar.getTime());
+
+            addNewNotif.setAchv_titles("New Task Created");
+            addNewNotif.setAchv_date(senderDetails);
+            addNewNotif.setAchv_details(question_task_heading);
+
+            // ***********************************************************
 
             if(mAuth.getCurrentUser()!=null)
             {
@@ -260,6 +296,29 @@ public class AdminCreateQuestionTaskActivity extends AppCompatActivity implement
                             //}
                         }
                     });
+
+
+                    // ********** Add notification status *******************
+                    // Get new push key
+                    String notif_key = mDatabase.child("UserNode").child(schoolKey).child("Notification").push().getKey();
+
+                    String firbaseIds = notif_key+"&&"+StartUpActivity.userDetails.getSchool_firbaseDataID();
+
+                    addNewNotif.setAchv_firbase_ID(firbaseIds);
+
+                    // save the user at UserNode under user UID
+                    mDatabase.child("UserNode").child(schoolKey).child("Notification").child(notif_key).setValue(addNewNotif, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                            //if(databaseError==null)
+                            //{
+                            //Toast.makeText(SendNotificationActivity.this, "Each Notification send!!",Toast.LENGTH_SHORT).show();
+                            //}
+                        }
+                    });
+
+                    // **********************************************************
 
 
 
@@ -415,5 +474,44 @@ public class AdminCreateQuestionTaskActivity extends AppCompatActivity implement
             }
         });
     }
+
+    // =================================================
+    // ---- Date Section -----
+    @SuppressWarnings("deprecation")
+    public void setDate() {
+        showDialog(999);
+        //Toast.makeText(getApplicationContext(), "ca",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        // TODO Auto-generated method stub
+        if (id == 999) {
+            return new DatePickerDialog(this,
+                    myDateListener, year, month, day);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener myDateListener = new
+            DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker arg0,
+                                      int arg1, int arg2, int arg3) {
+                    // TODO Auto-generated method stub
+                    // arg1 = year
+                    // arg2 = month
+                    // arg3 = day
+                    showDate(arg1, arg2+1, arg3);
+                }
+            };
+
+    private void showDate(int year, int month, int day) {
+        edtxt_question_task_Submittion_date.setText(new StringBuilder().append(day).append("/")
+                .append(month).append("/").append(year));
+    }
+
+    // ==================================================
+
 
 }

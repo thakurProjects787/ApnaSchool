@@ -1,0 +1,32 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+
+    <item
+        android:id="@+id/show_notice_all_notice"
+        android:title="Show All Notice"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/show_notice_only_state"
+        android:title="Only State"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/show_notice_only_district"
+        android:title="Only District"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/show_notice_search"
+        android:title="Search"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+
+</menu>

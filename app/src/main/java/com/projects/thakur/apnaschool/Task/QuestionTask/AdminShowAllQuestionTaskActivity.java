@@ -158,6 +158,10 @@ public class AdminShowAllQuestionTaskActivity extends AppCompatActivity {
                 holder.txtv_admin_show_all_question_task_last_date_value = (TextView) convertView.findViewById(R.id.txtv_admin_show_all_question_task_last_date_value);
                 holder.txtv_admin_show_all_question_task_heading_value = (TextView) convertView.findViewById(R.id.txtv_admin_show_all_question_task_heading_value);
 
+                holder.txtv_admin_show_all_question_task_details = (TextView) convertView.findViewById(R.id.txtv_admin_show_all_question_task_details);
+                holder.txtv_admin_show_all_question_task_extra = (TextView) convertView.findViewById(R.id.txtv_admin_show_all_question_task_extra);
+
+
 
                 convertView.setTag(holder);
             } else {
@@ -168,6 +172,9 @@ public class AdminShowAllQuestionTaskActivity extends AppCompatActivity {
 
             holder.txtv_admin_show_all_question_task_last_date_value.setText(acDetails.getTask_last_date());
             holder.txtv_admin_show_all_question_task_heading_value.setText(acDetails.getTask_heading());
+
+            holder.txtv_admin_show_all_question_task_details.setText(acDetails.getTask_details());
+            holder.txtv_admin_show_all_question_task_extra.setText("");
 
 
             final NewQuestionTaskModel obj= (NewQuestionTaskModel) this.getItem(position);
@@ -187,7 +194,7 @@ public class AdminShowAllQuestionTaskActivity extends AppCompatActivity {
         }
 
         public class ViewHolder {
-            TextView txtv_admin_show_all_question_task_last_date_value, txtv_admin_show_all_question_task_heading_value;
+            TextView txtv_admin_show_all_question_task_last_date_value, txtv_admin_show_all_question_task_heading_value,txtv_admin_show_all_question_task_details,txtv_admin_show_all_question_task_extra;
         }
 
     }

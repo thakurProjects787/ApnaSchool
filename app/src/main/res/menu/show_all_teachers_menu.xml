@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/filter_teachers_details_from_all"
+        android:title="Search With Keyword"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/filter_teachers_details_refresh_all"
+        android:title="Refresh"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/filter_teachers_details_generate_details"
+        android:title="Generate Report"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/filter_teachers_details_show_counts"
+        android:title="Show Count"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
+</menu>

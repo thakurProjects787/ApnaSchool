@@ -1,7 +1,10 @@
 package com.projects.thakur.apnaschool.UpdateInfo;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -22,9 +26,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.projects.thakur.apnaschool.AdminUser.ShowDisttAdminUserDetails;
+import com.projects.thakur.apnaschool.Auth.StartUpActivity;
 import com.projects.thakur.apnaschool.Model.AchivmentsDetails;
 import com.projects.thakur.apnaschool.Model.ClassDetails;
 import com.projects.thakur.apnaschool.R;
+
+import java.util.Calendar;
 
 public class AddNewAchivmentsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -35,11 +43,16 @@ public class AddNewAchivmentsActivity extends AppCompatActivity implements View.
 
     private ProgressDialog mProgressDialog;
 
-    private Button btn_add_new_achiv,btn_delete_current_achiv;
+    private Button btn_add_new_achiv,btn_delete_current_achiv,btn_achiv_set_date;
 
     private EditText edtxt_achiv_title,edtxt_achiv_date,edtxt_achiv_details;
 
     private String achiv_title,achiv_date,achiv_details;
+
+    // ===== Date Section ============
+    private DatePicker datePicker;
+    private Calendar calendar;
+    private int year, month, day;
 
     //Get value from parent activity
     private String operationStatus;
@@ -86,6 +99,16 @@ public class AddNewAchivmentsActivity extends AppCompatActivity implements View.
 
         btn_delete_current_achiv = (Button) findViewById(R.id.btn_delete_current_achiv);
         btn_delete_current_achiv.setOnClickListener(this);
+
+        btn_achiv_set_date = (Button) findViewById(R.id.btn_achiv_set_date);
+        btn_achiv_set_date.setOnClickListener(this);
+
+        // Get Datepicker objects
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
 
         // change view according to operationStatus
         if(operationStatus.equals("ADD_NEW")){
@@ -218,7 +241,22 @@ public class AddNewAchivmentsActivity extends AppCompatActivity implements View.
                     public void onClick(DialogInterface arg0, int arg1) {
 
                         deleteCurrentData();
-                        finish();
+
+                        if (StartUpActivity.userDetails.getType().equals("State")) {
+                            Intent intent = new Intent(AddNewAchivmentsActivity.this, ShowDisttAdminUserDetails.class);
+                            intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", "OWNER");
+                            startActivity(intent);
+
+                        } else if (StartUpActivity.userDetails.getType().equals("Admin")) {
+                            Intent intent = new Intent(AddNewAchivmentsActivity.this, ShowDisttAdminUserDetails.class);
+                            intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", "OWNER");
+                            startActivity(intent);
+
+                        } else {
+                            Intent intent = new Intent(AddNewAchivmentsActivity.this, ShowEachSchoolDetails.class);
+                            intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", "OWNER");
+                            startActivity(intent);
+                        }
 
                     }
                 });
@@ -234,6 +272,10 @@ public class AddNewAchivmentsActivity extends AppCompatActivity implements View.
                 alertDialog.show();
                 //======================================================================================
 
+                break;
+
+            case R.id.btn_achiv_set_date:
+                setDate();
                 break;
 
         }
@@ -318,5 +360,45 @@ public class AddNewAchivmentsActivity extends AppCompatActivity implements View.
         finish();
 
     }
+
+
+    // =================================================
+    // ---- Date Section -----
+    @SuppressWarnings("deprecation")
+    public void setDate() {
+        showDialog(999);
+        //Toast.makeText(getApplicationContext(), "ca",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        // TODO Auto-generated method stub
+        if (id == 999) {
+            return new DatePickerDialog(this,
+                    myDateListener, year, month, day);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener myDateListener = new
+            DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker arg0,
+                                      int arg1, int arg2, int arg3) {
+                    // TODO Auto-generated method stub
+                    // arg1 = year
+                    // arg2 = month
+                    // arg3 = day
+                    showDate(arg1, arg2+1, arg3);
+                }
+            };
+
+    private void showDate(int year, int month, int day) {
+        edtxt_achiv_date.setText(new StringBuilder().append(day).append("/")
+                .append(month).append("/").append(year));
+    }
+
+    // ==================================================
+
 
 }

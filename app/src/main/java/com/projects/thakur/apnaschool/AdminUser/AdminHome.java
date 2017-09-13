@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,10 +26,14 @@ import com.google.gson.Gson;
 import com.projects.thakur.apnaschool.Auth.LoginActivity;
 import com.projects.thakur.apnaschool.Auth.SignupActivity;
 import com.projects.thakur.apnaschool.Auth.StartUpActivity;
+import com.projects.thakur.apnaschool.Common.Logger;
+import com.projects.thakur.apnaschool.Common.NotifyService;
 import com.projects.thakur.apnaschool.Common.SettingActivity;
 import com.projects.thakur.apnaschool.DailyStatus.AdminOverallAttendenceStatus;
 import com.projects.thakur.apnaschool.DailyStatus.AdminOverallMDMStatusActivity;
 import com.projects.thakur.apnaschool.Model.UserBasicDetails;
+import com.projects.thakur.apnaschool.NoticeBoard.AddNewNoticeActivity;
+import com.projects.thakur.apnaschool.NoticeBoard.ShowNewNoticeActivity;
 import com.projects.thakur.apnaschool.R;
 import com.projects.thakur.apnaschool.Task.AdminShowAllTaskTypesActivity;
 import com.projects.thakur.apnaschool.UpdateInfo.ShowEachSchoolDetails;
@@ -42,7 +47,7 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
     private String userdetails;
 
 
-    private Button btn_addnewUser, btn_show_all_users, btn_today_attendencs_status,btn_today_mdm_status,btn_createTask,btn_show_all_task,btn_delete_any_user;
+    private Button btn_addnewUser, btn_show_all_users,btn_show_all_teachers_details, btn_today_attendencs_status,btn_today_mdm_status,btn_createTask,btn_show_all_task,btn_delete_any_user,btn_show_all_openpoints_details,btn_add_new_notice_dist,btn_show_all_notices_dist;
 
     private TextView txtv_logged_admin_name,txtv_logged_admin_email_id,txtv_admin_user_type,txtv_admin_user_address;
 
@@ -61,6 +66,11 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
         btn_createTask = (Button) findViewById(R.id.btn_create_new_task);
         btn_show_all_task = (Button) findViewById(R.id.btn_show_all_task);
         btn_delete_any_user = (Button) findViewById(R.id.btn_delete_any_user);
+        btn_show_all_teachers_details = (Button) findViewById(R.id.btn_show_all_teachers_details);
+        btn_show_all_openpoints_details = (Button) findViewById(R.id.btn_show_all_openpoints_details);
+
+        btn_add_new_notice_dist = (Button) findViewById(R.id.btn_add_new_notice_dist);
+        btn_show_all_notices_dist = (Button) findViewById(R.id.btn_show_all_notices_dist);
 
         // Click listeners
         btn_addnewUser.setOnClickListener(this);
@@ -70,6 +80,11 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
         btn_createTask.setOnClickListener(this);
         btn_show_all_task.setOnClickListener(this);
         btn_delete_any_user.setOnClickListener(this);
+        btn_show_all_teachers_details.setOnClickListener(this);
+        btn_show_all_openpoints_details.setOnClickListener(this);
+
+        btn_add_new_notice_dist.setOnClickListener(this);
+        btn_show_all_notices_dist.setOnClickListener(this);
 
         //Textview
         txtv_logged_admin_name = (TextView) findViewById(R.id.txtv_logged_admin_name);
@@ -107,6 +122,15 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
         txtv_admin_user_address.setText(userDetails.getPlace_name()+","+ userDetails.getDistt()+","+userDetails.getState());
         txtv_logged_admin_email_id.setText(userDetails.getSchool_emailID());
         txtv_admin_user_type.setText(userDetails.getType());
+
+
+        //============ START Notification Service ==================
+        // write school_firbasedataID into text file
+        Logger.deleteFile("keys.txt",this);
+        Logger.addDataIntoFile("keys.txt",userDetails.getSchool_firbaseDataID(),this);
+
+        Intent intent = new Intent(AdminHome.this, NotifyService.class);
+        AdminHome.this.startService(intent);
     }
 
     @Override
@@ -129,6 +153,28 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
                 else {
                     Intent intent = new Intent(AdminHome.this, ShowAllSchoolsActivity.class);
                     intent.putExtra("EXTRA_SHOW_ALL_SCHOOLS_SESSION_ID", "ADMIN");
+                    startActivity(intent);
+                }
+                break;
+
+            case R.id.btn_show_all_teachers_details:
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent = new Intent(AdminHome.this, ShowAllTeachersActivity.class);
+                    intent.putExtra("EXTRA_SHOW_ALL_TEACHERS_SESSION_ID", "ADMIN");
+                    startActivity(intent);
+                }
+                break;
+
+            case R.id.btn_show_all_openpoints_details:
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent = new Intent(AdminHome.this, ShowAllOpenPointsActivity.class);
+                    intent.putExtra("EXTRA_OPENPOINTS_INFO_SESSION_ID", "ADMIN");
                     startActivity(intent);
                 }
                 break;
@@ -200,6 +246,7 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
                 }
                 else {
                     Intent intent_att = new Intent(AdminHome.this, AdminOverallAttendenceStatus.class);
+                    intent_att.putExtra("EXTRA_ADMIN_STATE_ATTND_SESSION_ID", "DISTT");
                     startActivity(intent_att);
                 }
                 break;
@@ -210,6 +257,7 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
                 }
                 else {
                     Intent intent_mdm = new Intent(AdminHome.this, AdminOverallMDMStatusActivity.class);
+                    intent_mdm.putExtra("EXTRA_ADMIN_STATE_MDM_SESSION_ID", "DISTT");
                     startActivity(intent_mdm);
                 }
                 break;
@@ -230,6 +278,29 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
                     startActivity(intent_stask);
                 }
                 break;
+
+            case R.id.btn_add_new_notice_dist:
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent = new Intent(AdminHome.this, AddNewNoticeActivity.class);
+                    intent.putExtra("EXTRA_NEW_NOTICE_INFO_SESSION_ID", "ADD_NEW");
+                    startActivity(intent);
+                }
+                break;
+
+            case R.id.btn_show_all_notices_dist:
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent = new Intent(AdminHome.this, ShowNewNoticeActivity.class);
+                    intent.putExtra("EXTRA_ALL_NOTICE_INFO_SESSION_ID", "ADMIN");
+                    startActivity(intent);
+                }
+                break;
+
 
         }
     }
@@ -255,7 +326,7 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
                 Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
             }
             else {
-                Intent intent = new Intent(AdminHome.this, ShowEachSchoolDetails.class);
+                Intent intent = new Intent(AdminHome.this, ShowDisttAdminUserDetails.class);
                 intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", "OWNER");
                 startActivity(intent);
             }
@@ -269,6 +340,38 @@ public class AdminHome extends AppCompatActivity implements View.OnClickListener
             else {
                 startActivity(new Intent(AdminHome.this, SettingActivity.class));
             }
+        }
+
+        if (id == R.id.admin_home_menu_send_notification) {
+            if(!isConn()){
+                Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+            }
+            else {
+
+                Intent intent = new Intent(AdminHome.this, SendNotificationActivity.class);
+                intent.putExtra("EXTRA_NOTIFICATION_INFO_SESSION_ID", "SEND_ALL");
+                startActivity(intent);
+
+                //startActivity(new Intent(AdminHome.this, SendNotificationActivity.class));
+            }
+        }
+
+        if (id == R.id.admin_home_menu_show_all_notification) {
+            if(!isConn()){
+                Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+            }
+            else {
+                startActivity(new Intent(AdminHome.this, ShowAllNotification.class));
+            }
+        }
+
+        if (id == R.id.admin_home_menu_open_file_manager) {
+            Intent file_intent = new Intent(Intent.ACTION_GET_CONTENT);
+            file_intent.setType("*/*");
+
+            Uri uri = Uri.parse("/sdcard/Files/SchoolTrac"); // a directory
+            file_intent.setDataAndType(uri, "*/*");
+            startActivity(Intent.createChooser(file_intent, "Open folder"));
         }
 
 

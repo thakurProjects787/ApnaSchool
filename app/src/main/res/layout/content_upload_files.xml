@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_each_user_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.projects.thakur.apnaschool.UploadFiles.UploadFilesActivity"
+    tools:showIn="@layout/activity_upload_files">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtv_information_header1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dip"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="sans-serif"
+            android:text="Please Select Files to Upload :"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="24sp"
+            android:textStyle="normal|bold" />
+
+        <Button
+            android:id="@+id/btn_select_file_and_upload"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:background="@color/primary_dark"
+            android:text="Select File"
+            android:textColor="@color/accent"
+            android:textSize="24sp" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:textColorHint="@color/colorPrimaryDark">
+
+            <EditText
+                android:id="@+id/edtxt_upload_file_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="One Line Description"
+                android:inputType="textLongMessage"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/show_upload_image"
+            android:layout_marginTop="20dip"
+            android:layout_marginBottom="20dip"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

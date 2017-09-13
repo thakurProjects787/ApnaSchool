@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,10 +19,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import com.google.firebase.database.ValueEventListener;
 import com.projects.thakur.apnaschool.AdminUser.Account_Details;
 import com.projects.thakur.apnaschool.AdminUser.AdminHome;
 import com.projects.thakur.apnaschool.AdminUser.NewUserDetails;
@@ -132,12 +135,23 @@ public class SignupActivity extends AppCompatActivity {
                                     newuserEmailID = inputEmail.getText().toString().trim();
                                     newUserID = auth.getCurrentUser().getUid();
 
+                                    // SET User type
+                                    String currentUserType = StartUpActivity.userDetails.getType();
+                                    String newUserType = "Normal";
+                                    if(currentUserType.equals("State")){
+                                        newUserType = "Admin";
+                                    }
+
                                     // create user object and set all the properties
                                     UserBasicDetails schoolBasicInfo = new UserBasicDetails();
 
                                     schoolBasicInfo.setId("-");
                                     schoolBasicInfo.setName("-");
-                                    schoolBasicInfo.setType("Primary School");
+                                    if(currentUserType.equals("State")) {
+                                        schoolBasicInfo.setType("Admin");
+                                    } else {
+                                        schoolBasicInfo.setType("Primary School");
+                                    }
 
                                     schoolBasicInfo.setComplete_address("-");
                                     schoolBasicInfo.setPlace_name("-");
@@ -174,18 +188,19 @@ public class SignupActivity extends AppCompatActivity {
                                     Calendar calendar = Calendar.getInstance();
                                     SimpleDateFormat mdformat = new SimpleDateFormat("yyyy/MM/dd");
 
+
                                     // update new user details in admin node
 
                                     NewUserDetails newuserdetails = new NewUserDetails();
                                     newuserdetails.setNewuserID(newUserID);
                                     newuserdetails.setNewEmailID(newuserEmailID);
-                                    newuserdetails.setNewUserType("Normal");
+                                    newuserdetails.setNewUserType(newUserType);
                                     newuserdetails.setJoinDate(mdformat.format(calendar.getTime()));
 
 
                                     Account_Details newaccountdetails = new Account_Details();
                                     newaccountdetails.setEmail_ID(newuserEmailID);
-                                    newaccountdetails.setUser_Type("Normal");
+                                    newaccountdetails.setUser_Type(newUserType);
                                     newaccountdetails.setJoinDate(mdformat.format(calendar.getTime()));
                                     newaccountdetails.setAdminUserID(currentUserID);
 
@@ -323,4 +338,5 @@ public class SignupActivity extends AppCompatActivity {
             mProgressDialog.dismiss();
         }
     }
+
 }

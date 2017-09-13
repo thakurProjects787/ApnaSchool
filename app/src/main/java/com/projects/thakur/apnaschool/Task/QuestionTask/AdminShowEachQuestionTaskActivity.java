@@ -29,10 +29,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.projects.thakur.apnaschool.AdminUser.AdminHome;
+import com.projects.thakur.apnaschool.Auth.StartUpActivity;
 import com.projects.thakur.apnaschool.Common.CreateExcelReport;
 import com.projects.thakur.apnaschool.Common.Logger;
+import com.projects.thakur.apnaschool.NormalUser.NormalUserActivity;
 import com.projects.thakur.apnaschool.R;
+import com.projects.thakur.apnaschool.StateUsers.StateHome;
 import com.projects.thakur.apnaschool.Task.AdminShowAllTaskTypesActivity;
+import com.projects.thakur.apnaschool.Task.VirtualTask.ShowEachVirtualTaskActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -288,7 +292,19 @@ public class AdminShowEachQuestionTaskActivity extends AppCompatActivity {
                 public void onClick(DialogInterface arg0, int arg1) {
 
                     resolveTask();
-                    finish();
+
+                    if (StartUpActivity.userDetails.getType().equals("State")) {
+                        Intent intent = new Intent(AdminShowEachQuestionTaskActivity.this, StateHome.class);
+                        startActivity(intent);
+                    } else if (StartUpActivity.userDetails.getType().equals("Admin")) {
+                        Intent intent = new Intent(AdminShowEachQuestionTaskActivity.this, AdminHome.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(AdminShowEachQuestionTaskActivity.this, NormalUserActivity.class);
+                        startActivity(intent);
+                    }
+
+
 
                 }
             });

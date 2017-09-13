@@ -48,7 +48,7 @@
                         android:fontFamily="sans-serif"
                         android:text="Task Types :"
                         android:textAllCaps="false"
-                        android:textColor="@android:color/holo_orange_dark"
+                        android:textColor="@color/primary_dark"
                         android:textSize="24sp"
                         android:textStyle="normal|bold" />
 
@@ -58,10 +58,11 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dip"
-                        android:background="@color/accent"
+                        android:background="@color/btn_logut_bg"
+                        android:drawableRight="@drawable/ic_right_arrow"
                         android:fontFamily="monospace"
                         android:text="QUESTION TASK"
-                        android:textColor="@color/black"
+                        android:textColor="@color/accent"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -71,10 +72,11 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dip"
-                        android:background="@color/accent"
+                        android:background="@color/btn_logut_bg"
+                        android:drawableRight="@drawable/ic_right_arrow"
                         android:fontFamily="monospace"
                         android:text="VIRTUAL TASK"
-                        android:textColor="@color/black"
+                        android:textColor="@color/accent"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 

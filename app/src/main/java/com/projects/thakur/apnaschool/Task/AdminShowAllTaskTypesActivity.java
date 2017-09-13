@@ -7,9 +7,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
+import com.projects.thakur.apnaschool.Auth.StartUpActivity;
 import com.projects.thakur.apnaschool.R;
 import com.projects.thakur.apnaschool.Task.QuestionTask.AdminCreateQuestionTaskActivity;
 import com.projects.thakur.apnaschool.Task.QuestionTask.AdminShowAllQuestionTaskActivity;
+import com.projects.thakur.apnaschool.Task.VirtualTask.CreateNewVirtualTaskActivity;
+import com.projects.thakur.apnaschool.Task.VirtualTask.ShowAllVirtualTaskActivity;
 
 public class AdminShowAllTaskTypesActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -48,6 +51,10 @@ public class AdminShowAllTaskTypesActivity extends AppCompatActivity implements 
 
         operationStatus = getIntent().getStringExtra("EXTRA_SHOW_TASK_TYPE_SESSION_ID");
 
+        // SHow virtual task only to district levels
+        if(StartUpActivity.userDetails.getType().equals("State")){
+            btn_show_virtual_type_task_details.setVisibility(View.GONE);
+        }
 
     }
 
@@ -71,8 +78,14 @@ public class AdminShowAllTaskTypesActivity extends AppCompatActivity implements 
 
             case R.id.btn_show_virtual_type_task_details:
                 if(operationStatus.equals("CREATE")) {
-                    //Intent intent_c = new Intent(AdminShowAllTaskTypesActivity.this, UpdateClassDetails.class);
-                    //startActivity(intent_c);
+                    Intent intent_1 = new Intent(AdminShowAllTaskTypesActivity.this, CreateNewVirtualTaskActivity.class);
+                    intent_1.putExtra("EXTRA_VIRTUAL_TASK_SESSION_ID", "ADD_NEW");
+                    startActivity(intent_1);
+                } else {
+
+                    Intent intent_1 = new Intent(AdminShowAllTaskTypesActivity.this, ShowAllVirtualTaskActivity.class);
+                    intent_1.putExtra("EXTRA_VIRTUAL_TASK_SESSION_ID", "SHOW");
+                    startActivity(intent_1);
                 }
                 break;
 

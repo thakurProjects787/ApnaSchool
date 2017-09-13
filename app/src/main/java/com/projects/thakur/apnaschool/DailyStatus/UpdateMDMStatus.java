@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.projects.thakur.apnaschool.Auth.StartUpActivity;
+import com.projects.thakur.apnaschool.Model.AchivmentsDetails;
 import com.projects.thakur.apnaschool.Model.DailyMDMStatus;
 import com.projects.thakur.apnaschool.Model.MDMDetails;
 import com.projects.thakur.apnaschool.Model.UserBasicDetails;
@@ -51,6 +52,12 @@ public class UpdateMDMStatus extends AppCompatActivity implements View.OnClickLi
 
     //dialog box
     AlertDialog.Builder alertDialogBuilder;
+
+
+    // ====================================
+    // Notification details
+    private String header;
+    private String details;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,7 +254,8 @@ public class UpdateMDMStatus extends AppCompatActivity implements View.OnClickLi
                     UserBasicDetails schoolDetails = new StartUpActivity().userDetails;
                     todayMDMStatus.setSchool_details(schoolDetails.getId()+"#"+schoolDetails.getName()+"#"+schoolDetails.getDistt()+"#"+schoolDetails.getSchool_emailID());
 
-
+                    details = "MDM Students - T : "+mdmStudentsDetails.split("#")[0]+" P : "+mdmStudentsDetails.split("#")[1]+" A : "+mdmStudentsDetails.split("#")[2];
+                    details = details+"\nRice Details - Cooked : "+mdmriceStockDetails.split("#")[0]+" Left : "+mdmriceStockDetails.split("#")[1];
 
                     // Get current date
                     Calendar calendar = Calendar.getInstance();
@@ -270,6 +278,13 @@ public class UpdateMDMStatus extends AppCompatActivity implements View.OnClickLi
                                 {
                                     Toast.makeText(UpdateMDMStatus.this, "Your today MDM Status has been suubmitted !!",
                                             Toast.LENGTH_SHORT).show();
+
+                                    // ============ Send notification to Admin =============================
+                                    header = "MDM Report Submitted !!";
+                                    sendNotificationToAdmin();
+                                    // =====================================================================
+
+
                                     finish();
                                 }
                             }
@@ -393,4 +408,70 @@ public class UpdateMDMStatus extends AppCompatActivity implements View.OnClickLi
             mProgressDialog.dismiss();
         }
     }
+
+
+
+    /*
+       Send Notification to admin
+     */
+    private void sendNotificationToAdmin(){
+
+
+        mDatabase.child("UserNode").child(mAuth.getCurrentUser().getUid()).child("adminUserID").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String adminID = dataSnapshot.getValue().toString();
+
+                // =============== Update Admin Notification section ===================
+
+                //create  Details model
+                AchivmentsDetails addNewNotif = new AchivmentsDetails();
+
+                // Get current date
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat mdformat = new SimpleDateFormat("dd/MM/yyyy");
+
+                String senderDetails = StartUpActivity.userDetails.getName()+"  "+mdformat.format(calendar.getTime());
+
+                addNewNotif.setAchv_titles(header);
+                addNewNotif.setAchv_date(senderDetails);
+                addNewNotif.setAchv_details(details);
+
+                // Get new push key
+                String notif_key = mDatabase.child("UserNode").child(adminID).child("Notification").push().getKey();
+
+                String firbaseIds = notif_key+"&&"+StartUpActivity.userDetails.getSchool_firbaseDataID();
+
+                addNewNotif.setAchv_firbase_ID(firbaseIds);
+
+                // save the user at UserNode under user UID
+                mDatabase.child("UserNode").child(adminID).child("Notification").child(notif_key).setValue(addNewNotif, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                        //if(databaseError==null)
+                        //{
+                        //Toast.makeText(SendNotificationActivity.this, "Each Notification send!!",Toast.LENGTH_SHORT).show();
+                        //}
+                    }
+                });
+
+                // =====================================================================
+
+                mDatabase.child("UserNode").child(mAuth.getCurrentUser().getUid()).child("adminUserID").removeEventListener(this);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+
+
+        });
+    }
+
 }

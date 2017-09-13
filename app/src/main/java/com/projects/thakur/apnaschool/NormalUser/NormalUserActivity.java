@@ -1,5 +1,6 @@
 package com.projects.thakur.apnaschool.NormalUser;
 
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,14 +24,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.projects.thakur.apnaschool.AdminUser.ShowAllNotification;
 import com.projects.thakur.apnaschool.AdminUser.ShowAllSchoolsActivity;
 import com.projects.thakur.apnaschool.Auth.LoginActivity;
 import com.projects.thakur.apnaschool.Auth.StartUpActivity;
+import com.projects.thakur.apnaschool.Common.Logger;
+import com.projects.thakur.apnaschool.Common.NotifyService;
 import com.projects.thakur.apnaschool.Common.SettingActivity;
 import com.projects.thakur.apnaschool.DailyStatus.UpdateAttendenceStatus;
 import com.projects.thakur.apnaschool.DailyStatus.UpdateMDMStatus;
 import com.projects.thakur.apnaschool.Model.UserBasicDetails;
+import com.projects.thakur.apnaschool.NoticeBoard.ShowNewNoticeActivity;
 import com.projects.thakur.apnaschool.R;
+import com.projects.thakur.apnaschool.StateUsers.ShowStatesSchools;
 import com.projects.thakur.apnaschool.UpdateInfo.ShowEachSchoolDetails;
 
 public class NormalUserActivity extends AppCompatActivity implements View.OnClickListener {
@@ -39,7 +46,7 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
-    private Button btn_open_today_attendencs_window, btn_open_today_mdm_window, btn_my_all_task, btn_show_other_schools_data;
+    private Button btn_open_today_attendencs_window, btn_open_today_mdm_window, btn_my_all_task, btn_show_other_schools_data,btn_show_all_state_schools_data,btn_show_all_notices_normal;
 
     private TextView txtv_logged_user_name,txtv_logged_user_email_id,txtv_logged_user_type,txtv_logged_user_address;
 
@@ -58,6 +65,8 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
         btn_open_today_mdm_window = (Button) findViewById(R.id.btn_open_today_mdm_window);
         btn_my_all_task = (Button) findViewById(R.id.btn_my_all_task);
         btn_show_other_schools_data = (Button) findViewById(R.id.btn_show_other_schools_data);
+        btn_show_all_state_schools_data = (Button) findViewById(R.id.btn_show_all_state_schools_data);
+        btn_show_all_notices_normal = (Button) findViewById(R.id.btn_show_all_notices_normal);
 
 
         // Click listeners
@@ -65,6 +74,8 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
         btn_open_today_mdm_window.setOnClickListener(this);
         btn_my_all_task.setOnClickListener(this);
         btn_show_other_schools_data.setOnClickListener(this);
+        btn_show_all_state_schools_data.setOnClickListener(this);
+        btn_show_all_notices_normal.setOnClickListener(this);
 
 
         //Textview
@@ -105,6 +116,14 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
         txtv_logged_user_address.setText(userDetails.getPlace_name()+","+ userDetails.getDistt()+","+userDetails.getState());
         txtv_logged_user_email_id.setText(userDetails.getSchool_emailID());
         txtv_logged_user_type.setText(userDetails.getType());
+
+        //============ START Notification Service ==================
+        // write school_firbasedataID into text file
+        Logger.deleteFile("keys.txt",this);
+        Logger.addDataIntoFile("keys.txt",userDetails.getSchool_firbaseDataID(),this);
+
+        Intent intent = new Intent(NormalUserActivity.this, NotifyService.class);
+        NormalUserActivity.this.startService(intent);
     }
 
 
@@ -169,6 +188,71 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
 
                 }
                 break;
+
+            case R.id.btn_show_all_state_schools_data:
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    // FIrst get School admin details
+                    // Then find State admin details from distt admin
+
+                    mDatabase.child("UserNode").child(mAuth.getCurrentUser().getUid()).child("adminUserID").addValueEventListener(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            String adminID = dataSnapshot.getValue().toString();
+
+                            // Find Distt admin details
+                            mDatabase.child("UserNode").child(adminID).child("adminUserID").addValueEventListener(new ValueEventListener() {
+
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                    String stateAdmin = dataSnapshot.getValue().toString();
+
+                                    // ========================================================
+
+                                    Intent intent_stask = new Intent(NormalUserActivity.this, ShowStatesSchools.class);
+                                    intent_stask.putExtra("EXTRA_SHOW_ALL_SCHOOLS_SESSION_ID", stateAdmin);
+                                    startActivity(intent_stask);
+
+                                    //========================================================
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+
+                            });
+
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+
+                    });
+                }
+                break;
+
+            case R.id.btn_show_all_notices_normal:
+                if(!isConn()){
+                    Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent intent = new Intent(NormalUserActivity.this, ShowNewNoticeActivity.class);
+                    intent.putExtra("EXTRA_ALL_NOTICE_INFO_SESSION_ID", "ADMIN");
+                    startActivity(intent);
+                }
+                break;
+
         }
     }
 
@@ -177,7 +261,7 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.admin_home_menu, menu);
+        getMenuInflater().inflate(R.menu.normal_home_menu, menu);
         return true;
     }
 
@@ -189,7 +273,7 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.admin_home_menu_account_details) {
+        if (id == R.id.normal_home_menu_account_details) {
             if(!isConn()){
                 Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
             }
@@ -201,12 +285,21 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
             return true;
         }
 
-        if (id == R.id.admin_home_menu_account_setting) {
+        if (id == R.id.normal_home_menu_account_setting) {
             if(!isConn()){
                 Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
             }
             else {
                 startActivity(new Intent(NormalUserActivity.this, SettingActivity.class));
+            }
+        }
+
+        if (id == R.id.normal_home_menu_show_all_notification) {
+            if(!isConn()){
+                Toast.makeText(getApplicationContext(), "No Internet!", Toast.LENGTH_LONG).show();
+            }
+            else {
+                startActivity(new Intent(NormalUserActivity.this, ShowAllNotification.class));
             }
         }
 
@@ -248,6 +341,11 @@ public class NormalUserActivity extends AppCompatActivity implements View.OnClic
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
 

@@ -49,21 +49,35 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/colorPrimaryDark">
+                android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/edtxt_question_task_Submittion_date"
-                    android:layout_width="match_parent"
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="Submittion Date"
-                    android:inputType="text"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textColorHint="@color/colorPrimaryDark">
 
-            </android.support.design.widget.TextInputLayout>
+                    <EditText
+                        android:id="@+id/edtxt_question_task_Submittion_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Submittion Date"
+                        android:inputType="text"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_question_task_set_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/primary_dark"
+                    android:textColor="@color/accent"
+                    android:text="SET DATE" />
+            </LinearLayout>
 
 
             <TextView

@@ -8,16 +8,13 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="com.projects.thakur.apnaschool.Common.Maps.permission.MAPS_RECEIVE" />
-
-    <uses-permission android:name="com.projects.thakur.apnaschool.Common.Maps.permission.READ_GSERVICES"/>
+    <uses-permission android:name="com.projects.thakur.apnaschool.Common.Maps.permission.READ_GSERVICES" />
 
     <application
         android:allowBackup="true"
@@ -136,7 +133,62 @@
 
         <activity
             android:name=".Common.Maps.DisplaySchoolsOnMaps"
-            android:label="@string/title_activity_display_schools_on_maps"></activity>
+            android:label="@string/title_activity_display_schools_on_maps" />
+        <activity
+            android:name=".AdminUser.SendNotificationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AdminUser.ShowAllNotification"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AdminUser.ShowDisttAdminUserDetails"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service android:name=".Common.NotifyService" />
+
+        <activity android:name=".StateUsers.StateHome" />
+        <activity
+            android:name=".StateUsers.ShowStatesSchools"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AdminUser.ShowAllTeachersActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UpdateInfo.ShowOpenPointsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UpdateInfo.AddNewOpenPointsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AdminUser.ShowAllOpenPointsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UploadFiles.ShowGalleryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UploadFiles.UploadFilesActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NoticeBoard.AddNewNoticeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NoticeBoard.ShowNewNoticeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NoticeBoard.ShowNoticeInDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Task.VirtualTask.CreateNewVirtualTaskActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Task.VirtualTask.ShowAllVirtualTaskActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NormalUser.SubmitVirtualTaskActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Task.VirtualTask.ShowEachVirtualTaskActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

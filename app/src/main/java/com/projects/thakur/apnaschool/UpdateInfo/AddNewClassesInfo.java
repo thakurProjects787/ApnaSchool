@@ -2,6 +2,7 @@ package com.projects.thakur.apnaschool.UpdateInfo;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.projects.thakur.apnaschool.AdminUser.ShowDisttAdminUserDetails;
+import com.projects.thakur.apnaschool.Auth.StartUpActivity;
 import com.projects.thakur.apnaschool.Model.ClassDetails;
 import com.projects.thakur.apnaschool.R;
 
@@ -229,7 +232,23 @@ public class AddNewClassesInfo extends AppCompatActivity implements View.OnClick
                     public void onClick(DialogInterface arg0, int arg1) {
 
                         deleteCurrentClass();
-                        finish();
+
+                        if (StartUpActivity.userDetails.getType().equals("State")) {
+                            Intent intent = new Intent(AddNewClassesInfo.this, ShowDisttAdminUserDetails.class);
+                            intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", "OWNER");
+                            startActivity(intent);
+
+                        } else if (StartUpActivity.userDetails.getType().equals("Admin")) {
+                            Intent intent = new Intent(AddNewClassesInfo.this, ShowDisttAdminUserDetails.class);
+                            intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", "OWNER");
+                            startActivity(intent);
+
+                        } else {
+                            Intent intent = new Intent(AddNewClassesInfo.this, ShowEachSchoolDetails.class);
+                            intent.putExtra("EXTRA_SHOW_SCHOOL_SESSION_ID", "OWNER");
+                            startActivity(intent);
+                        }
+
 
                     }
                 });
